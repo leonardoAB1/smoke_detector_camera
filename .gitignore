@@ -1,0 +1,4 @@
+src/device/sdkconfig.old
+src/device/components
+src/device/build
+data/SmokerDetectionDataset
