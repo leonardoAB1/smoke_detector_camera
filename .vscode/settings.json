@@ -1,5 +1,7 @@
 {
-    "cmake.sourceDirectory": "C:/Users/ZEPHYRUS/Documents/UCB/Mecatronica/S7_MECATRONICA/smoke_detector_camera/src/device",
+    "cmake.sourceDirectory": "${workspaceFolder}/src/device",
     "cmake.autoSelectActiveFolder": false,
-    "cmake.buildDirectory": "${workspaceFolder}/src/device/build"
+    "cmake.buildDirectory": "${workspaceFolder}/src/device/build",
+    "idf.buildPath": "${workspaceFolder}/build",
+    "idf.buildPathWin": "${workspaceFolder}\\build"
 }

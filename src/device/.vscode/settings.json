@@ -15,5 +15,8 @@
     "idf.portWin": "COM4",
     "idf.pythonBinPathWin": "C:\\Users\\ZEPHYRUS\\.espressif\\python_env\\idf5.0_py3.8_env\\Scripts\\python.exe",
     "idf.toolsPathWin": "C:\\Users\\ZEPHYRUS\\.espressif",
-    "idf.flashType": "UART"
+    "idf.flashType": "UART",
+    "cmake.sourceDirectory": "C:/Users/ZEPHYRUS/Documents/UCB/Mecatronica/S7_MECATRONICA/smoke_detector_camera/src/device",
+    "idf.buildPath": "${workspaceFolder}/build",
+    "idf.buildPathWin": "${workspaceFolder}/build"
 }
