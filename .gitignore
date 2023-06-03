@@ -3,3 +3,5 @@ src/device/components
 src/device/build
 data/SmokerDetectionDataset
 src/cloud/backend/backend/__pycache__
+config/wifi.config
+src/device/main/config.h

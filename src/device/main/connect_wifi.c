@@ -1,11 +1,10 @@
 #include "connect_wifi.h"
+#include "config.h"
 
 int wifi_connect_status = 0;
 static const char *TAG = "Connect_WiFi";
 int s_retry_num = 0;
 
-#define WIFI_SSID "leoip_laptop"
-#define WIFI_PASSWORD "HakunaMatata"
 #define MAXIMUM_RETRY 5
 
 /* FreeRTOS event group to signal when we are connected */

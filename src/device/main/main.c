@@ -190,7 +190,7 @@ void app_main()
         err = init_camera();
         if (err != ESP_OK)
         {
-            printf("err: %s\n", esp_err_to_name(err));
+            ESP_LOGE(TAG, "err: %s\n", esp_err_to_name(err));
             return;
         }
 
