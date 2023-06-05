@@ -4,7 +4,7 @@
  * @date        27 May 2023
  * @brief       Main code of the Smoke Detector Camera DIY camera
  * 
- * @note        This code is written in C and is used on a ESP32-CAM development board.
+ * @note        This code is written in C and is used on an ESP32-CAM development board.
  *
  *******************************************************************************/
 
@@ -19,6 +19,8 @@
 #include "esp_timer.h"
 #include "camera_pins.h"
 #include "connect_wifi.h"
+
+#include "cJSON.h"
 
 // Tag for logging purposes
 static const char *TAG = "esp32-cam Webserver";
@@ -75,7 +77,8 @@ static esp_err_t init_camera(void)
 }
 
 // HTTP request handler for streaming MJPEG
-esp_err_t jpg_stream_httpd_handler(httpd_req_t *req){
+esp_err_t jpg_stream_httpd_handler(httpd_req_t *req)
+{
     camera_fb_t * fb = NULL;
     esp_err_t res = ESP_OK;
     size_t _jpg_buf_len;
@@ -84,7 +87,7 @@ esp_err_t jpg_stream_httpd_handler(httpd_req_t *req){
     static int64_t last_frame = 0;
 
     // Initialize last_frame if it's the first frame
-    if(!last_frame) {
+    if (!last_frame) {
         last_frame = esp_timer_get_time();
     }
 
@@ -95,7 +98,7 @@ esp_err_t jpg_stream_httpd_handler(httpd_req_t *req){
     }
 
     // Continuously stream MJPEG frames
-    while(true){
+    while (true) {
         // Capture frame from camera
         fb = esp_camera_fb_get();
         if (!fb) {
@@ -131,14 +134,26 @@ esp_err_t jpg_stream_httpd_handler(httpd_req_t *req){
 
         // Free the JPEG buffer if it was allocated
         if(fb->format != PIXFORMAT_JPEG){
-            free(_jpg_buf);
+            if (res == ESP_OK) {
+                res = httpd_resp_send_chunk(req, _STREAM_BOUNDARY, strlen(_STREAM_BOUNDARY));
+            }
+            if (fb) {
+                esp_camera_fb_return(fb);
+                fb = NULL;
+                _jpg_buf = NULL;
+            } else if (_jpg_buf) {
+                free(_jpg_buf);
+                _jpg_buf = NULL;
+            }
         }
         esp_camera_fb_return(fb);
 
         // Check for any errors and calculate frame time
-        if(res != ESP_OK){
+        if (res != ESP_OK) {
             break;
         }
+
+        // Calculate the delay for frame rate control
         int64_t fr_end = esp_timer_get_time();
         int64_t frame_time = fr_end - last_frame;
         last_frame = fr_end;
@@ -154,62 +169,108 @@ esp_err_t jpg_stream_httpd_handler(httpd_req_t *req){
     return res;
 }
 
-// URI handler for HTTP GET requests
-httpd_uri_t uri_get = {
-    .uri = "/",
-    .method = HTTP_GET,
-    .handler = jpg_stream_httpd_handler,
-    .user_ctx = NULL
-};
+// HTTP request handler for getting camera status
+esp_err_t status_httpd_handler(httpd_req_t *req)
+{
+    cJSON *root = cJSON_CreateObject();
+    cJSON_AddStringToObject(root, "status", "OK");
+    char *response = cJSON_Print(root);
 
-// Function to set up the HTTP server
-httpd_handle_t setup_server(void)
+    httpd_resp_set_type(req, "application/json");
+    httpd_resp_send(req, response, strlen(response));
+
+    cJSON_Delete(root);
+    free(response);
+
+    return ESP_OK;
+}
+
+void stream_task(void *pvParameters)
+{
+    httpd_req_t *req = (httpd_req_t *)pvParameters;
+    jpg_stream_httpd_handler(req);
+    vTaskDelete(NULL);
+}
+
+void status_task(void *pvParameters)
+{
+    httpd_req_t *req = (httpd_req_t *)pvParameters;
+    status_httpd_handler(req);
+    vTaskDelete(NULL);
+}
+
+// Set up the HTTP server
+httpd_handle_t start_webserver(void)
 {
     httpd_config_t config = HTTPD_DEFAULT_CONFIG();
-    httpd_handle_t stream_httpd  = NULL;
+    httpd_handle_t server = NULL;
 
-    // Start the HTTP server
-    if (httpd_start(&stream_httpd , &config) == ESP_OK)
-    {
-        // Register the URI handler for HTTP GET requests
-        httpd_register_uri_handler(stream_httpd , &uri_get);
+    // Start the httpd server
+    if (httpd_start(&server, &config) == ESP_OK) {
+        // Register URI handlers
+        httpd_uri_t uri_stream = {
+            .uri       = "/stream",
+            .method    = HTTP_GET,
+            .handler   = NULL, // Null handler, will be handled by the task
+            .user_ctx  = NULL
+        };
+        httpd_uri_t uri_status = {
+            .uri       = "/status",
+            .method    = HTTP_GET,
+            .handler   = NULL, // Null handler, will be handled by the task
+            .user_ctx  = NULL
+        };
+
+        // Create a task for each request
+        httpd_handle_t *server_copy = malloc(sizeof(httpd_handle_t));
+        *server_copy = server;
+        xTaskCreatePinnedToCore(stream_task, "stream_task", 4096, &uri_stream, 5, NULL, 1);
+        xTaskCreatePinnedToCore(status_task, "status_task", 4096, &uri_status, 5, NULL, 1);
+
+        return server;
     }
 
-    return stream_httpd;
+    ESP_LOGE(TAG, "Error starting server!");
+    return NULL;
+}
+
+void stop_webserver(httpd_handle_t server)
+{
+    // Stop the httpd server
+    httpd_stop(server);
 }
 
 // Entry point of the application
-void app_main()
+void app_main(void)
 {
-    esp_err_t err;
+    // Initialize NVS
+    esp_err_t err = nvs_flash_init();
+    if (err != ESP_OK) {
+        ESP_ERROR_CHECK(err);
+    }
 
-    // Initialize NVS (Non-Volatile Storage)
-    esp_err_t ret = nvs_flash_init();
-    if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND)
-    {
-        ESP_ERROR_CHECK(nvs_flash_erase());
-        ret = nvs_flash_init();
+    // Initialize the camera
+    err = init_camera();
+    if (err != ESP_OK) {
+        ESP_LOGE(TAG, "Camera initialization failed with error 0x%x", err);
+        return;
     }
 
     // Connect to Wi-Fi
-    connect_wifi();
-
-    if (wifi_connect_status)
-    {
-        // Initialize the camera
-        err = init_camera();
-        if (err != ESP_OK)
-        {
-            ESP_LOGE(TAG, "err: %s\n", esp_err_to_name(err));
-            return;
-        }
-
-        // Set up the HTTP server
-        setup_server();
-
-        ESP_LOGI(TAG, "ESP32 CAM Web Server is up and running\n");
+    err = connect_wifi();
+    if (err != ESP_OK) {
+        ESP_LOGE(TAG, "Wi-Fi connection failed with error %d", err);
+        return;
     }
-    else {
-        ESP_LOGI(TAG, "Failed to connect with Wi-Fi, check your network credentials\n");
+
+    // Start the web server
+    httpd_handle_t server = start_webserver();
+    if (server == NULL) {
+        ESP_LOGE(TAG, "Failed to start web server");
+        ESP_LOGI(TAG, "Restarting System...");
+        esp_restart();
+    }
+    else{
+        ESP_LOGI(TAG, "Camera web server started");
     }
 }

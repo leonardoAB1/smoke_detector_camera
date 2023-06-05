@@ -26,9 +26,10 @@
 #include <lwip/sys.h>
 #include <lwip/api.h>
 #include <lwip/netdb.h>
+#include "cJSON.h" // Include cJSON library
 
 extern int wifi_connect_status;
 
-void connect_wifi(void);
+esp_err_t connect_wifi(void);
 
 #endif
