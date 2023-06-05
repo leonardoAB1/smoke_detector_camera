@@ -8,6 +8,9 @@
 		},
 		{
 			"path": "src/cloud"
+		},
+		{
+			"path": "src/cloud/frontend"
 		}
 	],
 	"settings": {
@@ -43,6 +46,7 @@
 			"tuple": "c",
 			"utility": "c",
 			"esp_system.h": "c"
-		}
+		},
+		"liveServer.settings.multiRootWorkspaceName": "frontend"
 	}
 }
