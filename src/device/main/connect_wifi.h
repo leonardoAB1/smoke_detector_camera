@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * @file        connect_wifi.h
+ * @author      Leonardo Acha Boiano
+ * @date        27 May 2023
+ * @brief       Wifi related functions of the Smoke Detector Camera DIY camera
+ * 
+ * @note        This code is written in C and is used on a ESP32-CAM development board.
+ *
+ *******************************************************************************/
+
 #ifndef CONNECT_WIFI_H_
 #define CONNECT_WIFI_H_
 

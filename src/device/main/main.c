@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * @file        main.c
+ * @author      Leonardo Acha Boiano
+ * @date        27 May 2023
+ * @brief       Main code of the Smoke Detector Camera DIY camera
+ * 
+ * @note        This code is written in C and is used on a ESP32-CAM development board.
+ *
+ *******************************************************************************/
+
 #include <esp_system.h>
 #include <nvs_flash.h>
 #include "freertos/FreeRTOS.h"
