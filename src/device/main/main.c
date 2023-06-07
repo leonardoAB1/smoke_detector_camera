@@ -27,13 +27,40 @@ static const char *TAG = "esp32-cam Webserver";
 
 // Boundary for multipart/x-mixed-replace content type
 #define PART_BOUNDARY "123456789000000000000987654321"
-static const char* _STREAM_BOUNDARY = "\r\n--" PART_BOUNDARY "\r\n";
-static const char* _STREAM_PART = "Content-Type: image/jpeg\r\nContent-Length: %u\r\n\r\n";
 // Boundary for multipart/form-data content type
 #define BOUNDARY "------------------------123456789000000000000987654321"
 
 // Frequency of XCLK pin of the camera
 #define CONFIG_XCLK_FREQ 20000000 
+
+// User roles
+typedef enum {
+    ROLE_USER,
+    ROLE_ADMIN,
+    ROLE_UNKNOWN
+} UserRole;
+
+// Global variable to store the authenticated user's role
+UserRole authenticatedUserRole;
+
+// Function to authenticate the user and extract the role from the request headers
+UserRole authenticateUser(httpd_req_t *req)
+{
+    // Extract the value of the X-User-Role header
+    char roleHeader[32];
+    size_t headerLen = sizeof(roleHeader);
+    if (httpd_req_get_hdr_value_str(req, "X-User-Role", roleHeader, headerLen) != ESP_OK) {
+        // User role header not found
+        return ROLE_UNKNOWN;
+    }
+
+    // Check if the role is "admin"
+    if (strcmp(roleHeader, "admin") == 0) {
+        return ROLE_ADMIN;
+    }
+
+    return ROLE_USER;
+}
 
 // Function to initialize the camera
 static esp_err_t init_camera(void)
@@ -80,6 +107,14 @@ static esp_err_t init_camera(void)
 // HTTP request handler for getting a single image
 esp_err_t image_httpd_handler(httpd_req_t *req)
 {
+    // Authenticate the user
+    authenticatedUserRole = authenticateUser(req);
+
+    if (authenticatedUserRole != ROLE_USER && authenticatedUserRole != ROLE_ADMIN) {
+        httpd_resp_send_err(req, HTTPD_401_UNAUTHORIZED, "Unauthorized");
+        return ESP_OK;
+    }
+
     camera_fb_t *fb = esp_camera_fb_get();
     if (!fb) {
         ESP_LOGE(TAG, "Camera capture failed");
@@ -100,6 +135,14 @@ esp_err_t image_httpd_handler(httpd_req_t *req)
 // HTTP request handler for getting the camera status
 esp_err_t status_httpd_handler(httpd_req_t *req)
 {
+    // Authenticate the user
+    authenticatedUserRole = authenticateUser(req);
+
+    if (authenticatedUserRole != ROLE_USER && authenticatedUserRole != ROLE_ADMIN) {
+        httpd_resp_send_err(req, HTTPD_401_UNAUTHORIZED, "Unauthorized");
+        return ESP_OK;
+    }
+
     cJSON *root = cJSON_CreateObject();
     cJSON_AddStringToObject(root, "status", "online");
 
@@ -110,6 +153,82 @@ esp_err_t status_httpd_handler(httpd_req_t *req)
 
     cJSON_Delete(root);
     free(response);
+
+    return ESP_OK;
+}
+
+// HTTP request handler for admin functionality
+esp_err_t admin_httpd_handler(httpd_req_t *req)
+{
+    // Authenticate the user
+    authenticatedUserRole = authenticateUser(req);
+
+    if (authenticatedUserRole != ROLE_ADMIN) {
+        httpd_resp_send_err(req, HTTPD_401_UNAUTHORIZED, "Unauthorized");
+        return ESP_OK;
+    }
+
+    // Check if the request method is POST
+    if (req->method != HTTP_POST) {
+        httpd_resp_send_err(req, HTTPD_405_METHOD_NOT_ALLOWED, "Method Not Allowed");
+        return ESP_OK;
+    }
+
+    // Get the content length
+    char content_length_str[16];
+    if (httpd_req_get_hdr_value_str(req, "Content-Length", content_length_str, sizeof(content_length_str)) != ESP_OK) {
+        httpd_resp_send_err(req, HTTPD_400_BAD_REQUEST, "Bad Request");
+        return ESP_OK;
+    }
+
+    size_t content_len = atoi(content_length_str);
+
+    // Read the request content data
+    char *content = malloc(content_len + 1);
+    if (!content) {
+        httpd_resp_send_err(req, HTTPD_500_INTERNAL_SERVER_ERROR, "Internal Server Error");
+        return ESP_OK;
+    }
+
+    int ret = httpd_req_recv(req, content, content_len);
+    if (ret <= 0) {
+        free(content);
+        httpd_resp_send_err(req, HTTPD_400_BAD_REQUEST, "Bad Request");
+        return ESP_OK;
+    }
+
+    content[ret] = '\0'; // Null-terminate the content
+
+    // Parse the JSON content
+    cJSON *json = cJSON_Parse(content);
+    if (!json) {
+        free(content);
+        httpd_resp_send_err(req, HTTPD_400_BAD_REQUEST, "Invalid JSON");
+        return ESP_OK;
+    }
+
+    // Get the value from the JSON object
+    cJSON *valueObj = cJSON_GetObjectItem(json, "value");
+    if (!valueObj || !cJSON_IsNumber(valueObj)) {
+        cJSON_Delete(json);
+        free(content);
+        httpd_resp_send_err(req, HTTPD_400_BAD_REQUEST, "Invalid JSON");
+        return ESP_OK;
+    }
+
+    int value = valueObj->valueint;
+
+    // Log the updated value
+    ESP_LOGI(TAG, "Value updated: %d", value);
+
+    // TODO: Handle the value as needed (e.g., update a variable)
+
+    cJSON_Delete(json);
+    free(content);
+
+    // Send a response
+    httpd_resp_set_type(req, "text/plain");
+    httpd_resp_send(req, "Value updated successfully", -1);
 
     return ESP_OK;
 }
@@ -138,9 +257,17 @@ httpd_handle_t start_webserver(void)
             .user_ctx = NULL
         };
 
+        httpd_uri_t uri_admin = {
+            .uri = "/admin",
+            .method = HTTP_POST,
+            .handler = admin_httpd_handler,
+            .user_ctx = NULL
+        };
+
         // Register the URI handlers
         httpd_register_uri_handler(server, &uri_image);
         httpd_register_uri_handler(server, &uri_status);
+        httpd_register_uri_handler(server, &uri_admin);
 
         return server;
     }
