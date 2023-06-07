@@ -21,6 +21,8 @@
 #include "connect_wifi.h"
 
 #include "cJSON.h"
+#include <stdint.h>
+#include <string.h>
 
 // Tag for logging purposes
 static const char *TAG = "esp32-cam Webserver";
@@ -101,6 +103,89 @@ static esp_err_t init_camera(void)
     {
         return err;
     }
+    return ESP_OK;
+}
+
+// Base64 encoding table
+static const char base64_table[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+
+// Function to perform base64 encoding
+int base64_encode(const unsigned char *src, size_t src_len, char *dst, size_t *dst_len)
+{
+    size_t i, j;
+    size_t encoded_len = (src_len + 2) / 3 * 4;
+
+    if (*dst_len < encoded_len) {
+        *dst_len = encoded_len;
+        return -1; // Destination buffer too small
+    }
+
+    for (i = 0, j = 0; i < src_len; i += 3, j += 4) {
+        uint32_t octet_a = i < src_len ? src[i] : 0;
+        uint32_t octet_b = i + 1 < src_len ? src[i + 1] : 0;
+        uint32_t octet_c = i + 2 < src_len ? src[i + 2] : 0;
+
+        dst[j] = base64_table[(octet_a >> 2) & 0x3F];
+        dst[j + 1] = base64_table[((octet_a & 0x3) << 4) | ((octet_b >> 4) & 0xF)];
+        dst[j + 2] = i + 1 < src_len ? base64_table[((octet_b & 0xF) << 2) | ((octet_c >> 6) & 0x3F)] : '=';
+        dst[j + 3] = i + 2 < src_len ? base64_table[octet_c & 0x3F] : '=';
+    }
+
+    *dst_len = encoded_len;
+    return 0;
+}
+
+// HTTP request handler for getting a single image base64 encoded
+esp_err_t image_base64_httpd_handler(httpd_req_t *req)
+{
+    // Authenticate the user
+    authenticatedUserRole = authenticateUser(req);
+
+    if (authenticatedUserRole != ROLE_USER && authenticatedUserRole != ROLE_ADMIN) {
+        httpd_resp_send_err(req, HTTPD_401_UNAUTHORIZED, "Unauthorized");
+        return ESP_OK;
+    }
+
+    camera_fb_t *fb = esp_camera_fb_get();
+    if (!fb) {
+        ESP_LOGE(TAG, "Camera capture failed");
+        httpd_resp_send_err(req, HTTPD_500_INTERNAL_SERVER_ERROR, "Internal Server Error");
+        return ESP_FAIL;
+    }
+
+    // Set the content type header
+    httpd_resp_set_type(req, "image/jpeg");
+
+    // Calculate the size of the base64-encoded data
+    size_t encoded_len = (fb->len + 2) / 3 * 4;
+
+    char *encoded_data = (char *)malloc(encoded_len);
+    if (!encoded_data) {
+        ESP_LOGE(TAG, "Memory allocation failed");
+        httpd_resp_send_err(req, HTTPD_500_INTERNAL_SERVER_ERROR, "Internal Server Error");
+        esp_camera_fb_return(fb);
+        return ESP_FAIL;
+    }
+
+    // Encode the image data using base64
+    size_t encoded_data_len = encoded_len;
+    int ret = base64_encode((const unsigned char *)fb->buf, fb->len, encoded_data, &encoded_data_len);
+    if (ret != 0) {
+        ESP_LOGE(TAG, "Base64 encoding failed. Error code: %d", ret);
+        ESP_LOGE(TAG, "Encoded data length: %d", encoded_data_len);
+        httpd_resp_send_err(req, HTTPD_500_INTERNAL_SERVER_ERROR, "Internal Server Error");
+        free(encoded_data);
+        esp_camera_fb_return(fb);
+        return ESP_FAIL;
+    }
+
+    // Send the encoded image data as the response
+    httpd_resp_send(req, encoded_data, encoded_data_len);
+
+    // Cleanup
+    free(encoded_data);
+    esp_camera_fb_return(fb);
+
     return ESP_OK;
 }
 
@@ -252,6 +337,14 @@ static void start_webserver(void)
             .user_ctx = NULL
         };
         httpd_register_uri_handler(server, &image_uri);
+
+        httpd_uri_t image64_uri = {
+            .uri = "/image64",
+            .method = HTTP_GET,
+            .handler = image_base64_httpd_handler,
+            .user_ctx = NULL
+        };
+        httpd_register_uri_handler(server, &image64_uri);
 
         httpd_uri_t status_uri = {
             .uri = "/status",
