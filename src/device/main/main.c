@@ -118,7 +118,7 @@ esp_err_t image_httpd_handler(httpd_req_t *req)
     camera_fb_t *fb = esp_camera_fb_get();
     if (!fb) {
         ESP_LOGE(TAG, "Camera capture failed");
-        httpd_resp_send_500(req);
+        httpd_resp_send_err(req, HTTPD_500_INTERNAL_SERVER_ERROR, "Internal Server Error");
         return ESP_FAIL;
     }
 
@@ -221,8 +221,10 @@ esp_err_t admin_httpd_handler(httpd_req_t *req)
     // Log the updated value
     ESP_LOGI(TAG, "Value updated: %d", value);
 
-    // TODO: Handle the value as needed (e.g., update a variable)
+    // Process the value (e.g., perform admin action)
+    // ...
 
+    // Cleanup
     cJSON_Delete(json);
     free(content);
 
@@ -234,86 +236,63 @@ esp_err_t admin_httpd_handler(httpd_req_t *req)
 }
 
 // Function to start the web server
-httpd_handle_t start_webserver(void)
+static void start_webserver(void)
 {
-    httpd_config_t config = HTTPD_DEFAULT_CONFIG();
     httpd_handle_t server = NULL;
+    httpd_config_t config = HTTPD_DEFAULT_CONFIG();
 
-    // Start the httpd server
+    // Start the HTTP server
     if (httpd_start(&server, &config) == ESP_OK)
     {
-        // Register URI handlers
-        httpd_uri_t uri_image = {
+        // Set URI handlers
+        httpd_uri_t image_uri = {
             .uri = "/image",
             .method = HTTP_GET,
             .handler = image_httpd_handler,
             .user_ctx = NULL
         };
+        httpd_register_uri_handler(server, &image_uri);
 
-        httpd_uri_t uri_status = {
+        httpd_uri_t status_uri = {
             .uri = "/status",
             .method = HTTP_GET,
             .handler = status_httpd_handler,
             .user_ctx = NULL
         };
+        httpd_register_uri_handler(server, &status_uri);
 
-        httpd_uri_t uri_admin = {
+        httpd_uri_t admin_uri = {
             .uri = "/admin",
             .method = HTTP_POST,
             .handler = admin_httpd_handler,
             .user_ctx = NULL
         };
+        httpd_register_uri_handler(server, &admin_uri);
 
-        // Register the URI handlers
-        httpd_register_uri_handler(server, &uri_image);
-        httpd_register_uri_handler(server, &uri_status);
-        httpd_register_uri_handler(server, &uri_admin);
-
-        return server;
+        ESP_LOGI(TAG, "HTTP server started");
     }
-
-    ESP_LOGE(TAG, "Error starting server!");
-    return NULL;
 }
 
 // Entry point of the application
 void app_main(void)
 {
-    // Initialize NVS
-    esp_err_t err = nvs_flash_init();
-    if (err != ESP_OK)
+    // Initialize NVS (Non-Volatile Storage) to store WiFi configuration
+    esp_err_t ret = nvs_flash_init();
+    if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND)
     {
-        ESP_ERROR_CHECK(err);
+        ESP_ERROR_CHECK(nvs_flash_erase());
+        ret = nvs_flash_init();
     }
+    ESP_ERROR_CHECK(ret);
+
+    // Connect to WiFi
+    connect_wifi();
 
     // Initialize the camera
-    err = init_camera();
-    if (err != ESP_OK)
-    {
-        ESP_LOGE(TAG, "Camera initialization failed with error 0x%x", err);
-        return;
-    }
-
-    // Connect to Wi-Fi
-    err = connect_wifi();
-    if (err != ESP_OK)
-    {
-        ESP_LOGE(TAG, "Wi-Fi connection failed with error %d", err);
-        return;
-    }
+    ESP_ERROR_CHECK(init_camera());
 
     // Start the web server
-    httpd_handle_t server = start_webserver();
-    if (server == NULL)
-    {
-        ESP_LOGE(TAG, "Failed to start web server");
-        ESP_LOGI(TAG, "Restarting System...");
-        esp_restart();
-    }
-    else
-    {
-        ESP_LOGI(TAG, "Camera web server started");
-    }
+    start_webserver();
 }
 
 /********************************* END OF FILE ********************************/
