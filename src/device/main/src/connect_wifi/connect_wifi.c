@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @file        connect_wifi.c
- * @author      Leonardo Acha Boiano
+ * @brief       Wifi related functions for the Smoke Detector Camera DIY camera
  * @date        27 May 2023
- * @brief       Wifi related functions of the Smoke Detector Camera DIY camera
+ * @author      Leonardo Acha Boiano
  * 
  * @note        This code is written in C and is used on an ESP32-CAM development board.
  *
@@ -12,7 +12,6 @@
 #include "config.h"
 
 int wifi_connect_status = 0;
-static const char *TAG = "Connect_WiFi";
 int s_retry_num = 0;
 
 #define MAXIMUM_RETRY 5
@@ -27,49 +26,54 @@ EventGroupHandle_t s_wifi_event_group;
 #define WIFI_FAIL_BIT BIT1
 
 /**
- * @brief Event handler function for WiFi events
+ * @brief Event handler function for WiFi events.
  * 
  * @param arg Argument passed to the event handler
  * @param event_base Base of the event
  * @param event_id ID of the event
  * @param event_data Data associated with the event
+ * @return esp_err_t Returns ESP_OK if the event is handled successfully, otherwise returns an error code.
  */
 static esp_err_t wifi_event_handler(void *arg, esp_event_base_t event_base, int32_t event_id, void *event_data)
 {
     if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_START)
     {
-	  ESP_LOGI(TAG, "Wi-Fi client started");
+        ESP_LOGI(WIFI_TAG, "Wi-Fi client started");
         esp_wifi_connect();
     }
     else if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_DISCONNECTED)
     {
-	  ESP_LOGI(TAG, "Disconnected from Wi-Fi");
+        ESP_LOGI(WIFI_TAG, "Disconnected from Wi-Fi");
         if (s_retry_num < MAXIMUM_RETRY)
         {
             esp_wifi_connect();
             s_retry_num++;
-            ESP_LOGI(TAG, "Retrying to connect to AP (%d/%d)", s_retry_num, MAXIMUM_RETRY);
+            ESP_LOGI(WIFI_TAG, "Retrying to connect to AP (%d/%d)", s_retry_num, MAXIMUM_RETRY);
         }
         else
         {
             xEventGroupSetBits(s_wifi_event_group, WIFI_FAIL_BIT);
         }
         wifi_connect_status = 0;
-        ESP_LOGE(TAG, "Connect to the AP fail");
+        ESP_LOGE(WIFI_TAG, "Connect to the AP fail");
     }
     else if (event_base == IP_EVENT && event_id == IP_EVENT_STA_GOT_IP)
     {
         ip_event_got_ip_t *event = (ip_event_got_ip_t *)event_data;
-        ESP_LOGI(TAG, "Got ip:" IPSTR, IP2STR(&event->ip_info.ip));
+        ESP_LOGI(WIFI_TAG, "Got ip:" IPSTR, IP2STR(&event->ip_info.ip));
         s_retry_num = 0;
         xEventGroupSetBits(s_wifi_event_group, WIFI_CONNECTED_BIT);
+
+
         wifi_connect_status = 1;
     }
-   return ESP_OK;
+    return ESP_OK;
 }
 
 /**
- * @brief Function to connect to Wi-Fi
+ * @brief Connects to Wi-Fi.
+ * 
+ * @return esp_err_t Returns ESP_OK if the connection is successful, otherwise returns an error code.
  */
 esp_err_t connect_wifi(void)
 {
@@ -106,7 +110,7 @@ esp_err_t connect_wifi(void)
     ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_STA, &wifi_config));
 
     // Start Wi-Fi
-    ESP_LOGI(TAG, "Starting Wi-Fi connection...");
+    ESP_LOGI(WIFI_TAG, "Starting Wi-Fi connection...");
     ESP_ERROR_CHECK(esp_wifi_start());
 
     // Wait until either the connection is successful or the maximum retries are reached
@@ -115,15 +119,15 @@ esp_err_t connect_wifi(void)
     // Check the connection status
     if (bits & WIFI_CONNECTED_BIT)
     {
-        ESP_LOGI(TAG, "Connected to Wi-Fi");
+        ESP_LOGI(WIFI_TAG, "Connected to Wi-Fi");
     }
     else if (bits & WIFI_FAIL_BIT)
     {
-        ESP_LOGE(TAG, "Failed to connect to Wi-Fi");
+        ESP_LOGE(WIFI_TAG, "Failed to connect to Wi-Fi");
     }
     else
     {
-        ESP_LOGE(TAG, "Unexpected event");
+        ESP_LOGE(WIFI_TAG, "Unexpected event");
     }
 
     // Clean up the event group

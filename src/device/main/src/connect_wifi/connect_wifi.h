@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @file        connect_wifi.h
- * @author      Leonardo Acha Boiano
+ * @brief       Wifi related functions for the Smoke Detector Camera DIY camera
  * @date        27 May 2023
- * @brief       Wifi related functions of the Smoke Detector Camera DIY camera
+ * @author      Leonardo Acha Boiano
  * 
  * @note        This code is written in C and is used on an ESP32-CAM development board.
  *
@@ -22,8 +22,13 @@
 #include <lwip/netdb.h>
 #include "cJSON.h"
 
-extern int wifi_connect_status;
+#include "../logging/logging_utils.h"
 
+/**
+ * @brief Connects to Wi-Fi.
+ * 
+ * @return esp_err_t Returns ESP_OK if the connection is successful, otherwise returns an error code.
+ */
 esp_err_t connect_wifi(void);
 
 #endif

@@ -12,6 +12,7 @@
 const char *CAMERA_TAG = "esp32-cam Camera";
 const char *WEBSERVER_TAG = "esp32-cam Webserver";
 const char *ADMIN_TAG = "esp32-cam Admin";
+const char *WIFI_TAG = "esp32-cam Connect Wifi";
 
 /********************************* END OF FILE ********************************/
 /******************************************************************************/
