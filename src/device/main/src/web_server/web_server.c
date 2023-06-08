@@ -1,8 +1,11 @@
 /*******************************************************************************
  * @file        web_server.c
+ * @brief       Web Server Implementation
+ * @details     This file contains the implementation of a web server for an ESP32-CAM development board.
+ *              It provides functions to start the web server and register URI handlers.
  * @author      Leonardo Acha Boiano
  * @date        7 Jun 2023
- * 
+ *
  * @note        This code is written in C and is used on an ESP32-CAM development board.
  *
  *******************************************************************************/
