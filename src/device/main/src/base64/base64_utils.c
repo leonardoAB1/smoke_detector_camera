@@ -7,7 +7,7 @@
  *
  *******************************************************************************/
 
-#include "base64_utils.h"
+#include "../base64/base64_utils.h"
 
 // Base64 encoding table
 static const char base64_table[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";

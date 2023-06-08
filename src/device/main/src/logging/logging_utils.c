@@ -1,5 +1,5 @@
 /*******************************************************************************
- * @file        web_server.h
+ * @file        logging_utils.h
  * @author      Leonardo Acha Boiano
  * @date        7 Jun 2023
  * 
@@ -7,15 +7,11 @@
  *
  *******************************************************************************/
 
-#ifndef WEB_SERVER_H
-#define WEB_SERVER_H
+#include "../logging/logging_utils.h"
 
-#include <esp_http_server.h>
-#include <http_handlers.h>
-
-void start_webserver(void);
-
-#endif  // WEB_SERVER_H
+const char *CAMERA_TAG = "esp32-cam Camera";
+const char *WEBSERVER_TAG = "esp32-cam Webserver";
+const char *ADMIN_TAG = "esp32-cam Admin";
 
 /********************************* END OF FILE ********************************/
 /******************************************************************************/

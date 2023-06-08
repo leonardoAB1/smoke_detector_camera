@@ -52,7 +52,8 @@
 			"logging_utils.h": "c",
 			"camera_utils.h": "c",
 			"camera_pins.h": "c",
-			"http_handlers.h": "c"
+			"http_handlers.h": "c",
+			"user_roles.h": "c"
 		},
 		"liveServer.settings.multiRootWorkspaceName": "frontend"
 	}

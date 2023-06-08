@@ -11,8 +11,8 @@
 #define CAMERA_UTILS_H
 
 #include "esp_camera.h"
-#include "camera_pins.h"
-#include "user_roles.h"
+#include "../camera/camera_pins.h"
+#include "../user_roles/user_roles.h"
 
 // Frequency of XCLK pin of the camera
 #define CONFIG_XCLK_FREQ 20000000 

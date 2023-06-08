@@ -7,7 +7,7 @@
  *
  *******************************************************************************/
 
-#include "camera_utils.h"
+#include "../camera/camera_utils.h"
 
 // Function to initialize the camera
 esp_err_t init_camera(void)

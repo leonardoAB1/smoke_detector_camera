@@ -15,10 +15,10 @@
 #include "driver/gpio.h"
 #include "esp_timer.h"
 
-#include "connect_wifi.h"
-#include "camera_utils.h"
-#include "web_server.c"
-#include "http_handlers.h"
+#include "connect_wifi/connect_wifi.h"
+#include "camera/camera_utils.h"
+#include "web_server/web_server.c"
+#include "http_handlers/http_handlers.h"
 
 // Boundary for multipart/x-mixed-replace content type
 #define PART_BOUNDARY "123456789000000000000987654321"

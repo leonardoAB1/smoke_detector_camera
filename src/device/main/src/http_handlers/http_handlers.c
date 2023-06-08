@@ -7,7 +7,7 @@
  *
  *******************************************************************************/
 
-#include "http_handlers.h"
+#include "../http_handlers/http_handlers.h"
 
 // HTTP request handler for getting a single image base64 encoded
 esp_err_t image_base64_httpd_handler(httpd_req_t *req)

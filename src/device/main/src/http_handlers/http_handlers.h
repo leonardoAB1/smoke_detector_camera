@@ -17,9 +17,10 @@
 #include <esp_camera.h>
 #include <cJSON.h>
 #include <esp_http_server.h>
-#include <logging_utils.h>
-#include <user_roles.h>
-#include "base64_utils.h"
+
+#include "../logging/logging_utils.h"
+#include "../user_roles/user_roles.h"
+#include "../base64/base64_utils.h"
 
 esp_err_t image_base64_httpd_handler(httpd_req_t *req);
 esp_err_t image_httpd_handler(httpd_req_t *req);

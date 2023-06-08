@@ -1,18 +1,19 @@
-set(srcs "main.c"
-         "connect_wifi.c"
-         "base64_utils.c"
-         "camera_utils"
-         "http_handlers.c"
-         "logging_utils.c"
-         "user_roles.c"
-         "web_server.c"
-         )
-idf_component_register(SRCS ${srcs}
-                    INCLUDE_DIRS ".")
+idf_component_register(SRCS
+    src/main.c
+    src/connect_wifi/connect_wifi.c
+    src/base64/base64_utils.c
+    src/camera/camera_utils.c
+    src/http_handlers/http_handlers.c
+    src/logging/logging_utils.c
+    src/user_roles/user_roles.c
+    src/web_server/web_server.c
+    INCLUDE_DIRS
+    "src"
+)
 
 # Set the paths for the configuration and header files
 set(CONFIG_FILE "${CMAKE_CURRENT_SOURCE_DIR}/../../../config/wifi.config")
-set(HEADER_FILE "${CMAKE_CURRENT_SOURCE_DIR}/config.h")
+set(HEADER_FILE "${CMAKE_CURRENT_SOURCE_DIR}/src/config.h")
 
 # Read the SSID and password from the configuration file
 file(STRINGS ${CONFIG_FILE} CONFIG_CONTENTS)
