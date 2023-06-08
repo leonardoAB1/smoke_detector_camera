@@ -45,7 +45,14 @@
 			"array": "c",
 			"tuple": "c",
 			"utility": "c",
-			"esp_system.h": "c"
+			"esp_system.h": "c",
+			"cjson.h": "c",
+			"connect_wifi.h": "c",
+			"esp_log.h": "c",
+			"logging_utils.h": "c",
+			"camera_utils.h": "c",
+			"camera_pins.h": "c",
+			"http_handlers.h": "c"
 		},
 		"liveServer.settings.multiRootWorkspaceName": "frontend"
 	}

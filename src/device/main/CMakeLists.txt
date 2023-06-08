@@ -1,5 +1,12 @@
 set(srcs "main.c"
-         "connect_wifi.c")
+         "connect_wifi.c"
+         "base64_utils.c"
+         "camera_utils"
+         "http_handlers.c"
+         "logging_utils.c"
+         "user_roles.c"
+         "web_server.c"
+         )
 idf_component_register(SRCS ${srcs}
                     INCLUDE_DIRS ".")
 
