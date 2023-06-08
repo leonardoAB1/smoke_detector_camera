@@ -1,5 +1,6 @@
 /*******************************************************************************
  * @file        user_roles.h
+ * @brief       User roles authentication header file
  * @author      Leonardo Acha Boiano
  * @date        7 Jun 2023
  * 
@@ -19,6 +20,13 @@ typedef enum {
     ROLE_UNKNOWN
 } UserRole;
 
+/**
+ * @brief Authenticate the user and extract the role from the request headers.
+ * 
+ * @param req Pointer to the HTTP request object.
+ * 
+ * @return The role of the authenticated user (UserRole).
+*/
 UserRole authenticateUser(httpd_req_t *req);
 
 #endif  // USER_ROLES_H
