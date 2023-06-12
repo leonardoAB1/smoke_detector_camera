@@ -18,7 +18,7 @@
 #include "connect_wifi/connect_wifi.h"
 #include "camera/camera_utils.h"
 #include "camera/camera_pins.h"
-#include "gpio/gpio_utils.h"
+#include "gpio_utils/gpio_utils.h"
 #include "motor_control/motor_control.h"
 #include "web_server/web_server.c"
 #include "http_handlers/http_handlers.h"

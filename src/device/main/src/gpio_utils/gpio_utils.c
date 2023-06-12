@@ -6,7 +6,7 @@
  * @note        This code is written in C and is used on an ESP32-CAM development board.
  *
  *******************************************************************************/
-#include "../gpio/gpio_utils.h"
+#include "../gpio_utils/gpio_utils.h"
 
 void init_gpio(void) {
     // Initialize GPIO pins for servos as PWM outputs
@@ -15,7 +15,7 @@ void init_gpio(void) {
     // gpio_pad_select_gpio(GPIO_SERVO1);
     // gpio_set_level(GPIO_SERVO1, 0);
     
-    // Initialize GPIO pins for LEDs as digital outputs
+    // Initialize GPIO pins for LEDs as digital output
     
     // Initialize GPIO pins for LDR as digital input
     
