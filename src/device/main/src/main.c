@@ -17,6 +17,9 @@
 
 #include "connect_wifi/connect_wifi.h"
 #include "camera/camera_utils.h"
+#include "camera/camera_pins.h"
+#include "gpio/gpio_utils.h"
+#include "motor_control/motor_control.h"
 #include "web_server/web_server.c"
 #include "http_handlers/http_handlers.h"
 
@@ -46,8 +49,15 @@ void app_main(void)
     // Initialize the camera
     ESP_ERROR_CHECK(init_camera());
 
+    // Initialize GPIO pins
+    init_gpio();
+
     // Start the web server
     start_webserver();
+
+    // Implement the default motor behavior
+    move_motor_default(MOTOR_01);
+    move_motor_default(MOTOR_02);
 }
 
 /********************************* END OF FILE ********************************/

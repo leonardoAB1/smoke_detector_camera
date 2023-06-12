@@ -20,6 +20,7 @@
 
 #include <esp_http_server.h>
 #include "../http_handlers/http_handlers.h"
+#include "../motor_control/motor_control.h"
 
 /**
  * @brief Start the web server.

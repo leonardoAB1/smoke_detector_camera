@@ -54,6 +54,86 @@ void start_webserver(void)
         };
         httpd_register_uri_handler(server, &admin_uri);
 
+        httpd_uri_t motor_01_set_uri = {
+            .uri = "/motor_01/set",
+            .method = HTTP_POST,
+            .handler = handle_set_motor_angle, //needs motor number as a header
+            .user_ctx = NULL
+        };
+        httpd_register_uri_handler(server, &motor_01_set_uri);
+
+        httpd_uri_t motor_01_get_uri = {
+            .uri = "/motor_01/get",
+            .method = HTTP_GET,
+            .handler = handle_get_motor_angle, //needs motor number as a header
+            .user_ctx = NULL
+        };
+        httpd_register_uri_handler(server, &motor_01_get_uri);
+
+        httpd_uri_t motor_02_set_uri = {
+        .uri = "/motor_02/set",
+        .method = HTTP_POST,
+        .handler = handle_set_motor_angle,
+        .user_ctx = NULL
+        };
+        httpd_register_uri_handler(server, &motor_02_set_uri);
+
+        httpd_uri_t motor_02_get_uri = {
+            .uri = "/motor_02/get",
+            .method = HTTP_GET,
+            .handler = handle_get_motor_angle,
+            .user_ctx = NULL
+        };
+        httpd_register_uri_handler(server, &motor_02_get_uri);
+
+        httpd_uri_t ldr_set_uri = {
+            .uri = "/ldr/set",
+            .method = HTTP_POST,
+            .handler = handle_set_ldr,  //for testing purposes
+            .user_ctx = NULL
+        };
+        httpd_register_uri_handler(server, &ldr_set_uri);
+
+        httpd_uri_t ldr_get_uri = {
+            .uri = "/ldr/get",
+            .method = HTTP_GET,
+            .handler = handle_get_ldr,
+            .user_ctx = NULL
+        };
+        httpd_register_uri_handler(server, &ldr_get_uri);
+        
+        httpd_uri_t led_set_uri = {
+            .uri = "/led/set",
+            .method = HTTP_POST,
+            .handler = handle_set_led, 
+            .user_ctx = NULL
+        };
+        httpd_register_uri_handler(server, &led_set_uri);
+
+        httpd_uri_t led_get_uri = {
+            .uri = "/led/get",
+            .method = HTTP_GET,
+            .handler = handle_get_led,
+            .user_ctx = NULL
+        };
+        httpd_register_uri_handler(server, &led_get_uri);
+        
+        httpd_uri_t smoke_sensor_set_uri = {
+            .uri = "/smoke_sensor/set",
+            .method = HTTP_POST,
+            .handler = handle_set_smoke_sensor, //for testing purposes
+            .user_ctx = NULL
+        };
+        httpd_register_uri_handler(server, &smoke_sensor_set_uri);
+
+        httpd_uri_t smoke_sensor_get_uri = {
+            .uri = "/smoke_sensor/get",
+            .method = HTTP_GET,
+            .handler = handle_get_smoke_sensor,
+            .user_ctx = NULL
+        };
+        httpd_register_uri_handler(server, &smoke_sensor_get_uri);
+
         ESP_LOGI(WEBSERVER_TAG, "HTTP server started");
     }
 }

@@ -24,6 +24,12 @@
 #include "../base64/base64_utils.h"
 
 /**
+ * @brief       The authenticated user role.
+ * @note        This variable is defined in main.c.
+ */
+extern UserRole authenticatedUserRole;
+
+/**
  * @brief       HTTP request handler for getting a single image in base64 encoding.
  * @param[in]   req The HTTP request object.
  * @return      An esp_err_t indicating the success or failure of the operation.
@@ -51,11 +57,14 @@ esp_err_t status_httpd_handler(httpd_req_t *req);
  */
 esp_err_t admin_httpd_handler(httpd_req_t *req);
 
-/**
- * @brief       The authenticated user role.
- * @note        This variable is defined in main.c.
- */
-extern UserRole authenticatedUserRole;
+esp_err_t handle_set_motor_angle(httpd_req_t *req); //motor number and angle needed in header
+esp_err_t handle_get_motor_angle(httpd_req_t *req);
+esp_err_t handle_set_ldr(httpd_req_t *req);
+esp_err_t handle_get_ldr(httpd_req_t *req);
+esp_err_t handle_set_led(httpd_req_t *req);
+esp_err_t handle_get_led(httpd_req_t *req);
+esp_err_t handle_set_smoke_sensor(httpd_req_t *req);
+esp_err_t handle_get_smoke_sensor(httpd_req_t *req);
 
 #endif  // HTTP_HANDLERS_H
 
