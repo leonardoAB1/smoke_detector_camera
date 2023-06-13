@@ -10,6 +10,7 @@
 #define MOTOR_CONTROL_H_
 
 #include <stdbool.h>
+#include "../gpio_utils/gpio_utils.h"
 
 #define MOTOR_1 1
 #define MOTOR_2 2

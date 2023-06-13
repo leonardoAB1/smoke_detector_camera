@@ -9,11 +9,15 @@
  *******************************************************************************/
 #include "../task_utils/task_utils.h"
 
+TaskHandle_t motorTask;    // Define motorTask globally
+BaseType_t result;         // Define result globally
+TaskParams_t taskParams;   // Define taskParams globally
+
 void initialize_tasks(void)
 {
 	TaskInitParams_t const TaskInitParameters[] = {
 		// Pointer to the Task function, Task String Name, The task stack depth, Parameter Pointer, Task priority, Task Handle
-		//(TaskFunction_t)SomeTask, "SomeTask", SOME_TASK_STACK_DEPTH, &taskParams, SOME_TASK_PRIORITY, &someTask
+		{(TaskFunction_t)MotorControlTask, "motor_control_task", configMINIMAL_STACK_SIZE, NULL, 5, &motorTask}
     };
 
 	// Loop through the task table and create each task.
@@ -31,12 +35,7 @@ void initialize_tasks(void)
 	}	
 }
 
-/**
- * @brief Task Description
- * 
- * @param pvParameters Pointer to the task parameters.
- */
-void SomeTask(void *pvParameters)
+void MotorControlTask(void *pvParameters)
 {
 	//Handles
 

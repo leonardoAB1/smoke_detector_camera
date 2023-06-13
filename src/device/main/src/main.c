@@ -56,9 +56,7 @@ void app_main(void)
     // Start the web server
     start_webserver();
 
-    // Implement the default motor behavior
-    move_motor_default(MOTOR_01);
-    move_motor_default(MOTOR_02);
+    // Implement the default motor behavior in a task
 }
 
 /********************************* END OF FILE ********************************/

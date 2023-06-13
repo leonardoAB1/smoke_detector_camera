@@ -43,12 +43,12 @@ typedef struct
  */
 void initialize_tasks(void);
 
-void SomeTask(void* pvParameters) __attribute__((noreturn));
-
-// Declare global variables
-extern TaskHandle_t someTask;
-extern BaseType_t result;
-extern TaskParams_t taskParams;
+/**
+ * @brief Task Description
+ * 
+ * @param pvParameters Pointer to the task parameters.
+ */
+void MotorControlTask(void* pvParameters) __attribute__((noreturn));
 
 #endif /* _TASKS_H_ */
 
