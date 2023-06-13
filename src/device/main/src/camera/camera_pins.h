@@ -66,8 +66,8 @@
 #define CAM_PIN_HREF 23
 #define CAM_PIN_PCLK 22
 
-#define GPIO_SERVO1 12
-#define GPIO_SERVO2 13
+#define GPIO_SERVO_1 12
+#define GPIO_SERVO_2 13
 #define GPIO_LEDs 15
 #define GPIO_LDR 14
 #define GPIO_SMOKE_SENSOR 2

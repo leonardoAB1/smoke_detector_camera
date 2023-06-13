@@ -12,7 +12,7 @@ esp_err_t init_gpio(void) {
     // Initialize GPIO pins for servos as PWM outputs
     // Motor1
     ledc_channel_config_t channelConfigMotor1 = {0};
-    channelConfigMotor1.gpio_num     = GPIO_SERVO1;
+    channelConfigMotor1.gpio_num     = GPIO_SERVO_1;
     channelConfigMotor1.speed_mode   = LEDC_HIGH_SPEED_MODE;
     channelConfigMotor1.channel      = LEDC_CHANNEL_0;
     channelConfigMotor1.intr_type    = LEDC_INTR_DISABLE;
@@ -22,7 +22,7 @@ esp_err_t init_gpio(void) {
     
     // Motor2
     ledc_channel_config_t channelConfigMotor2 = {0};
-    channelConfigMotor2.gpio_num     = GPIO_SERVO2;
+    channelConfigMotor2.gpio_num     = GPIO_SERVO_2;
     channelConfigMotor2.speed_mode   = LEDC_HIGH_SPEED_MODE;
     channelConfigMotor2.channel      = LEDC_CHANNEL_1;
     channelConfigMotor2.intr_type    = LEDC_INTR_DISABLE;
