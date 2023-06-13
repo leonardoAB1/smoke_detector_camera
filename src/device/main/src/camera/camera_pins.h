@@ -68,7 +68,7 @@
 
 #define GPIO_SERVO1 12
 #define GPIO_SERVO2 13
-#define GPIO_LEDS 15
+#define GPIO_LEDs 15
 #define GPIO_LDR 14
 #define GPIO_SMOKE_SENSOR 2
 #define GPIO_PIR_SIGNAL 4

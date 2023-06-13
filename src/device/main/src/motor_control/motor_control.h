@@ -14,6 +14,8 @@
 #define MOTOR_01 1
 #define MOTOR_02 2
 
+#define MOTOR_FREQUENCY 50
+
 void move_motor_custom(int motor, int angle);
 void move_motor_default(int motor);
 
