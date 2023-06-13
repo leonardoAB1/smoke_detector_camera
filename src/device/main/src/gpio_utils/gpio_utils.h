@@ -11,8 +11,6 @@
 #include "../camera/camera_pins.h"
 #include "../motor_control/motor_control.h"
 #include "driver/gpio.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
 #include "driver/ledc.h"
 
 #define HIGH    1

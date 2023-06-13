@@ -10,6 +10,7 @@ idf_component_register(SRCS
     src/gpio_utils/gpio_utils.c
     src/http_handlers/http_handlers.c
     src/motor_control/motor_control.c
+    src/task_utils/task_utils.c
     INCLUDE_DIRS
     "src"
 )

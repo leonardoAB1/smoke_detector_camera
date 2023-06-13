@@ -10,9 +10,6 @@
 
 #include <esp_system.h>
 #include <nvs_flash.h>
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "driver/gpio.h"
 #include "esp_timer.h"
 
 #include "connect_wifi/connect_wifi.h"
@@ -22,6 +19,7 @@
 #include "motor_control/motor_control.h"
 #include "web_server/web_server.c"
 #include "http_handlers/http_handlers.h"
+#include "task_utils/task_utils.h"
 
 // Boundary for multipart/x-mixed-replace content type
 #define PART_BOUNDARY "123456789000000000000987654321"
@@ -43,14 +41,17 @@ void app_main(void)
     }
     ESP_ERROR_CHECK(ret);
 
-    // Connect to WiFi
-    connect_wifi();
-
     // Initialize the camera
     ESP_ERROR_CHECK(init_camera());
 
     // Initialize GPIO pins
     init_gpio();
+
+    //Initialize FreeRTOS Tasks
+    initialize_tasks();
+
+    // Connect to WiFi
+    connect_wifi();
 
     // Start the web server
     start_webserver();
