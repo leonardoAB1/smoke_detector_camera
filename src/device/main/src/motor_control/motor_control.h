@@ -10,36 +10,39 @@
 #define MOTOR_CONTROL_H_
 
 #include <stdbool.h>
+#include <math.h>
 #include "../gpio_utils/gpio_utils.h"
 
-#define MOTOR_1 1
-#define MOTOR_2 2
+#define MOTOR_1 LEDC_CHANNEL_0
+#define MOTOR_2 LEDC_CHANNEL_1
 
-#define MOTOR_FREQUENCY 50
+#define PWM_FREQUENCY 50
+#define PWM_RESOLUTION LEDC_TIMER_13_BIT
 
-/**
- * @brief Moves the specified motor to a custom angle.
- * 
- * @param motor The motor to move (MOTOR_1 or MOTOR_2).
- * @param angle The desired angle for the motor (0 to 180 for MOTOR_1, 0 to 90 for MOTOR_2).
- * 
- * @note This function allows admins to control the motors freely through a REST API command.
- *       The motor angle is updated as requested and no longer follows the default pattern.
- * @note Admin user permissions are required to execute this function.
- */
-void move_motor_custom(int motor, int angle);
+#define SERVO_MS_MIN 0.06 //0.06ms
+#define SERVO_MS_MAX 2.0  //2ms
 
 /**
- * @brief Moves the specified motor to the default angle.
+ * @brief Moves the specified motor to a given angle.
  * 
  * @param motor The motor to move (MOTOR_1 or MOTOR_2).
+ * @param duty Desired motor duty cycle.
  * 
- * @note This function returns the specified motor to the default angle as per the default pattern.
- *       The default pattern consists of motor1 moving from 0 to 180 degrees, with each degree taking 2 seconds,
- *       and motor2 moving from 0 to 90 degrees, with each degree taking 3 seconds.
- * @note Admin user permissions are required to stop and restart this function.
+ * @note This function allows admins to control the servo motors.
  */
-void move_motor_default(int motor);
+void move_motor(int motor, int duty);
+
+/**
+ * @brief Calculates the duty cycle based on the given angle.
+ * 
+ * @param angle The angle (in degrees) to calculate the duty cycle.
+ * @return The calculated duty cycle.
+ * 
+ * @note This function uses the LEDC library to control the duty cycle of the ESP32.
+ *       The duty cycle is calculated based on the servo pulse width range defined by
+ *       SERVO_MS_MIN and SERVO_MS_MAX, and the desired PWM frequency and resolution.
+ */
+int getDutyCycleFromAngle(float angle);
 
 #endif /* MOTOR_CONTROL_H_ */
 

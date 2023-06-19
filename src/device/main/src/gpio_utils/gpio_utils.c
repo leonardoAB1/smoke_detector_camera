@@ -33,9 +33,9 @@ esp_err_t init_gpio(void) {
     //Initialize Timer
     ledc_timer_config_t timerConfig = {0};
     timerConfig.speed_mode          = LEDC_HIGH_SPEED_MODE;
-    timerConfig.duty_resolution     = LEDC_TIMER_10_BIT;
+    timerConfig.duty_resolution     = PWM_RESOLUTION;
     timerConfig.timer_num           = LEDC_TIMER_0;
-    timerConfig.freq_hz             = MOTOR_FREQUENCY; //50 Hz
+    timerConfig.freq_hz             = PWM_FREQUENCY; //50 Hz
     ledc_timer_config(&timerConfig);
 
     // Initialize GPIO pins for LEDs as digital output

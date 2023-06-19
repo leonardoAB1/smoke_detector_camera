@@ -11,6 +11,9 @@
 		},
 		{
 			"path": "src/cloud/frontend"
+		},
+		{
+			"path": "../imt232_sistemasEmbebidos2/embobados_lab/lab_03"
 		}
 	],
 	"settings": {
@@ -56,7 +59,9 @@
 			"user_roles.h": "c",
 			"freertos.h": "c",
 			"task.h": "c",
-			"esp_rom_gpio.h": "c"
+			"esp_rom_gpio.h": "c",
+			"task_utils.h": "c",
+			"cmath": "c"
 		},
 		"liveServer.settings.multiRootWorkspaceName": "frontend"
 	}
