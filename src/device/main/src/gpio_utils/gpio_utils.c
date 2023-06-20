@@ -16,7 +16,7 @@ esp_err_t init_gpio(void) {
     channelConfigMotor1.speed_mode   = LEDC_HIGH_SPEED_MODE;
     channelConfigMotor1.channel      = LEDC_CHANNEL_0;
     channelConfigMotor1.intr_type    = LEDC_INTR_DISABLE;
-    channelConfigMotor1.timer_sel    = LEDC_TIMER_0;
+    channelConfigMotor1.timer_sel    = LEDC_TIMER_1;
     channelConfigMotor1.duty         = 0; //Initial Duty Cycle
     ledc_channel_config(&channelConfigMotor1);
     
@@ -26,7 +26,7 @@ esp_err_t init_gpio(void) {
     channelConfigMotor2.speed_mode   = LEDC_HIGH_SPEED_MODE;
     channelConfigMotor2.channel      = LEDC_CHANNEL_1;
     channelConfigMotor2.intr_type    = LEDC_INTR_DISABLE;
-    channelConfigMotor2.timer_sel    = LEDC_TIMER_0;
+    channelConfigMotor2.timer_sel    = LEDC_TIMER_1;
     channelConfigMotor2.duty         = 0; //Initial Duty Cycle
     ledc_channel_config(&channelConfigMotor2);
 
@@ -34,7 +34,7 @@ esp_err_t init_gpio(void) {
     ledc_timer_config_t timerConfig = {0};
     timerConfig.speed_mode          = LEDC_HIGH_SPEED_MODE;
     timerConfig.duty_resolution     = PWM_RESOLUTION;
-    timerConfig.timer_num           = LEDC_TIMER_0;
+    timerConfig.timer_num           = LEDC_TIMER_1;
     timerConfig.freq_hz             = PWM_FREQUENCY; //50 Hz
     ledc_timer_config(&timerConfig);
 
@@ -42,7 +42,7 @@ esp_err_t init_gpio(void) {
     gpio_reset_pin(GPIO_LEDs);
     gpio_set_direction(GPIO_LEDs, GPIO_MODE_OUTPUT);
 
-    gpio_install_isr_service(ESP_INTR_FLAG_LEVEL3); // Install ISR service
+    //gpio_install_isr_service(ESP_INTR_FLAG_LEVEL3); // Install ISR service
 
     // Initialize GPIO pins for LDR as digital input
     gpio_reset_pin(GPIO_LDR);

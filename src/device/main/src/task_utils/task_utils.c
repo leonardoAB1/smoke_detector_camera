@@ -55,37 +55,59 @@ void initialize_tasks(void)
 void MotorAdminControlTask(void *pvParameters)
 {
     TaskParams_t *params = (TaskParams_t *)pvParameters;
+	if (params == NULL)
+    {
+        // Handle the error or return early
+        // For example, you can log an error message and delete the task
+        vTaskDelete(NULL);
+    }
 
     while (1)
     {
-        MotorAngles_t angles;
-        //angles.angle1 = 45;
-        //angles.angle2 = 90;
-        //xQueueSend(params->motorAnglesQueue, &angles, portMAX_DELAY);
+        // Reset the watchdog timer
+        //esp_task_wdt_reset();
 
-        // Rest of the task code
+        MotorAngles_t angles;
+        if (xQueueReceive(params->motorAnglesQueue, &angles, portMAX_DELAY) == pdTRUE)
+        {
+            // Acquire motor1Mutex before accessing MOTOR_1
+            xSemaphoreTake(motor1Mutex, portMAX_DELAY);
+            move_motor(MOTOR_1, getDutyCycleFromAngle(angles.angle1));
+            xSemaphoreGive(motor1Mutex);
+
+            // Acquire motor2Mutex before accessing MOTOR_2
+            xSemaphoreTake(motor2Mutex, portMAX_DELAY);
+            move_motor(MOTOR_2, getDutyCycleFromAngle(angles.angle2));
+            xSemaphoreGive(motor2Mutex);
+        }
+
+        // Delay between iterations to control the task execution rate
+        vTaskDelay(pdMS_TO_TICKS(100));  // Delay for 100 milliseconds
     }
 }
 
-
 void MotorDefaultControlTask(void *pvParameters)
 {
-	// Cast the task parameters
-    TaskParams_t *params = (TaskParams_t *)pvParameters;
+    while (1)
+    {
+        // Reset the watchdog timer
+        //esp_task_wdt_reset();
 
-	while (1)
-	{		
-        //Run motor behavior
-		move_motor(MOTOR_1, getDutyCycleFromAngle(0));
-		move_motor(MOTOR_2, getDutyCycleFromAngle(0));
+        // Acquire motor1Mutex before accessing MOTOR_1
+        xSemaphoreTake(motor1Mutex, portMAX_DELAY);
+        move_motor(MOTOR_1, getDutyCycleFromAngle(0));
+        xSemaphoreGive(motor1Mutex);
 
-		move_motor(MOTOR_1, getDutyCycleFromAngle(90));
-		move_motor(MOTOR_2, getDutyCycleFromAngle(90));
+        // Acquire motor2Mutex before accessing MOTOR_2
+        xSemaphoreTake(motor2Mutex, portMAX_DELAY);
+        move_motor(MOTOR_2, getDutyCycleFromAngle(0));
+        xSemaphoreGive(motor2Mutex);
 
-		move_motor(MOTOR_1, getDutyCycleFromAngle(180));
-		move_motor(MOTOR_2, getDutyCycleFromAngle(180));
-	}
+        // Delay between iterations to control the task execution rate
+        vTaskDelay(pdMS_TO_TICKS(1000));  // Delay for 1 second
+    }
 }
+
 
 /********************************* END OF FILE ********************************/
 /******************************************************************************/

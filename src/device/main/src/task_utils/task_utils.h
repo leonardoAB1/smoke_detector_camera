@@ -10,15 +10,16 @@
 #define _TASKS_H_
 
 #include "stdio.h"
+#include "esp_task_wdt.h"
 #include "../motor_control/motor_control.h"
 
 // Define the stack depth and priority for the DecrementTask
 #define TASK_MOTOR_ADMIN_CONTROL_STACK_DEPTH configMINIMAL_STACK_SIZE
-#define TASK_MOTOR_ADMIN_CONTROL_PRIORITY 1
+#define TASK_MOTOR_ADMIN_CONTROL_PRIORITY configMAX_PRIORITIES - 2
 
 // Define the stack depth and priority for the Default Control Task
 #define TASK_MOTOR_DEFAULT_CONTROL_STACK_DEPTH configMINIMAL_STACK_SIZE
-#define TASK_MOTOR_DEFAULT_CONTROL_PRIORITY 2
+#define TASK_MOTOR_DEFAULT_CONTROL_PRIORITY configMAX_PRIORITIES - 2
 
 #define MOTOR_ANGLES_QUEUE_ITEM_NUMBER 10  
 

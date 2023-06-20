@@ -53,6 +53,8 @@ static esp_err_t wifi_event_handler(void *arg, esp_event_base_t event_base, int3
         else
         {
             xEventGroupSetBits(s_wifi_event_group, WIFI_FAIL_BIT);
+            // Reboot the platform
+            esp_restart();
         }
         wifi_connect_status = 0;
         ESP_LOGE(WIFI_TAG, "Connect to the AP fail");
