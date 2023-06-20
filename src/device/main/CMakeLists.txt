@@ -7,8 +7,8 @@ idf_component_register(SRCS
     src/logging/logging_utils.c
     src/user_roles/user_roles.c
     src/web_server/web_server.c
+    src/gpio_interrupts/gpio_interrupts.c
     src/gpio_utils/gpio_utils.c
-    src/http_handlers/http_handlers.c
     src/motor_control/motor_control.c
     src/task_utils/task_utils.c
     INCLUDE_DIRS

@@ -61,7 +61,9 @@
 			"task.h": "c",
 			"esp_rom_gpio.h": "c",
 			"task_utils.h": "c",
-			"cmath": "c"
+			"cmath": "c",
+			"format": "c",
+			"gpio_utils.h": "c"
 		},
 		"liveServer.settings.multiRootWorkspaceName": "frontend"
 	}

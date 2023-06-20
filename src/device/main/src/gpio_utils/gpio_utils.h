@@ -16,6 +16,7 @@
 #include "freertos/task.h"
 #include "freertos/semphr.h"
 #include "freertos/queue.h"
+#include "../gpio_interrupts/gpio_interrupts.h"
 
 #define HIGH    1
 #define LOW     0
