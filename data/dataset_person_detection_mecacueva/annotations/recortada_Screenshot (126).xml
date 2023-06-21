@@ -1,0 +1,37 @@
+<annotation>
+	<folder>annotations</folder>
+	<filename>recortada_Screenshot (126).png</filename>
+	<path>/annotations/recortada_Screenshot (126).png</path>
+	<source>
+		<database>Unspecified</database>
+	</source>
+	<size>
+		<width>770</width>
+		<height>590</height>
+		<depth>3</depth>
+	</size>
+	<object>
+		<name>person</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>158</xmin>
+			<ymin>337</ymin>
+			<xmax>379</xmax>
+			<ymax>590</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>person</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>39</xmin>
+			<ymin>111</ymin>
+			<xmax>242</xmax>
+			<ymax>533</ymax>
+		</bndbox>
+	</object>
+</annotation>

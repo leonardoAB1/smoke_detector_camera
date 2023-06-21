@@ -1,0 +1,37 @@
+<annotation>
+	<folder>annotations</folder>
+	<filename>image_20230620230035.jpg</filename>
+	<path>/annotations/image_20230620230035.jpg</path>
+	<source>
+		<database>Unspecified</database>
+	</source>
+	<size>
+		<width>640</width>
+		<height>480</height>
+		<depth>3</depth>
+	</size>
+	<object>
+		<name>person</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>268</xmin>
+			<ymin>13</ymin>
+			<xmax>434</xmax>
+			<ymax>221</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>person</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>414</xmin>
+			<ymin>57</ymin>
+			<xmax>640</xmax>
+			<ymax>329</ymax>
+		</bndbox>
+	</object>
+</annotation>
