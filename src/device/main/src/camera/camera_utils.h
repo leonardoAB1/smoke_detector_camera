@@ -15,7 +15,7 @@
 #include "../user_roles/user_roles.h"
 
 // Frequency of XCLK pin of the camera
-#define CONFIG_XCLK_FREQ 20000000 
+#define CONFIG_XCLK_FREQ 2300000
 
 esp_err_t init_camera(void);
 

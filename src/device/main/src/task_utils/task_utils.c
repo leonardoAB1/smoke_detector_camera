@@ -42,14 +42,17 @@ void initialize_tasks(void)
 		 TaskCount < sizeof(TaskInitParameters) / sizeof(TaskInitParameters[0]);
 		 TaskCount++)
 	{
-		result = xTaskCreate(TaskInitParameters[TaskCount].TaskCodePtr,
+		result = xTaskCreatePinnedToCore(TaskInitParameters[TaskCount].TaskCodePtr,
 							 TaskInitParameters[TaskCount].TaskName,
 							 TaskInitParameters[TaskCount].StackDepth,
 							 (void*)TaskInitParameters[TaskCount].ParametersPtr,
 							 TaskInitParameters[TaskCount].TaskPriority,
-							 TaskInitParameters[TaskCount].TaskHandle);
+							 TaskInitParameters[TaskCount].TaskHandle,
+                             1  // Set the core ID to 1 (core 1)
+                             );
 		configASSERT(result == pdPASS); // Make sure the task was created successfully
 	}	
+    ESP_LOGI(TASK_LOG_TAG, "Motor Tasks Initialized");
 }
 
 void MotorAdminControlTask(void *pvParameters)
@@ -68,7 +71,7 @@ void MotorAdminControlTask(void *pvParameters)
         //esp_task_wdt_reset();
 
         MotorAngles_t angles;
-        if (xQueueReceive(params->motorAnglesQueue, &angles, portMAX_DELAY) == pdTRUE)
+        if (xQueueReceive((QueueHandle_t)params->motorAnglesQueue, &angles, portMAX_DELAY) == pdTRUE)
         {
             // Acquire motor1Mutex before accessing MOTOR_1
             xSemaphoreTake(motor1Mutex, portMAX_DELAY);
@@ -97,6 +100,8 @@ void MotorDefaultControlTask(void *pvParameters)
         xSemaphoreTake(motor1Mutex, portMAX_DELAY);
         move_motor(MOTOR_1, getDutyCycleFromAngle(0));
         xSemaphoreGive(motor1Mutex);
+
+        vTaskDelete(NULL);
 
         // Acquire motor2Mutex before accessing MOTOR_2
         xSemaphoreTake(motor2Mutex, portMAX_DELAY);

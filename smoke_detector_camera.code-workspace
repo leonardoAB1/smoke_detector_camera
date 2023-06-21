@@ -67,7 +67,8 @@
 			"motor_control.h": "c",
 			"web_server.h": "c",
 			"esp_http_server.h": "c",
-			"esp_task_wdt.h": "c"
+			"esp_task_wdt.h": "c",
+			"esp_camera.h": "c"
 		},
 		"liveServer.settings.multiRootWorkspaceName": "frontend"
 	}

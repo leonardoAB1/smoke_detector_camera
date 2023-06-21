@@ -33,6 +33,11 @@ extern const char *ADMIN_TAG;
  */
 extern const char *WIFI_TAG;
 
+/**
+ * @brief Tag for wifi-related log messages
+ */
+extern const char *TASK_LOG_TAG;
+
 #endif  // LOGGING_UTILS_H
 
 /********************************* END OF FILE ********************************/
