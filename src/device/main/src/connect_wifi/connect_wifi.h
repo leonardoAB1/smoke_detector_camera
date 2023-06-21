@@ -24,6 +24,8 @@
 
 #include "../logging/logging_utils.h"
 
+#define MAXIMUM_RETRY 5
+
 /**
  * @brief Connects to Wi-Fi.
  * 

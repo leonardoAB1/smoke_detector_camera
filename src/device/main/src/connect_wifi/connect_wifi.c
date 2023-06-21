@@ -14,8 +14,6 @@
 int wifi_connect_status = 0;
 int s_retry_num = 0;
 
-#define MAXIMUM_RETRY 5
-
 /* FreeRTOS event group to signal when we are connected */
 EventGroupHandle_t s_wifi_event_group;
 
