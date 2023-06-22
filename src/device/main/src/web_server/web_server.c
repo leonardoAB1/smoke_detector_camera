@@ -17,10 +17,10 @@ void start_webserver(void)
 {
     httpd_handle_t server = NULL;
     httpd_config_t config = HTTPD_DEFAULT_CONFIG();
-    config.core_id = 0;  // Set the core ID to 0 (core 0)
+    //config.core_id = 0;  // Set the core ID to 0 (core 0)
     config.max_uri_handlers = 20;
-    config.task_priority    = tskIDLE_PRIORITY+1;
-    config.uri_match_fn     = httpd_uri_match_wildcard;
+    //config.task_priority    = tskIDLE_PRIORITY+1;
+    //config.uri_match_fn     = httpd_uri_match_wildcard;
 
     // Start the HTTP server
     if (httpd_start(&server, &config) == ESP_OK)
