@@ -71,7 +71,7 @@
 #define GPIO_LEDs 15
 #define GPIO_LDR 14
 #define GPIO_SMOKE_SENSOR 2
-#define GPIO_PIR_SIGNAL 16
+#define GPIO_PIR_SIGNAL 4
 #endif
 
 
