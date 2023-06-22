@@ -13,7 +13,7 @@
 esp_err_t image_base64_httpd_handler(httpd_req_t *req)
 {
     // Authenticate the user
-    UserRole authenticatedUserRole = authenticateUser(req);
+    authenticatedUserRole = authenticateUser(req);
 
     if (authenticatedUserRole != ROLE_USER && authenticatedUserRole != ROLE_ADMIN) {
         httpd_resp_send_err(req, HTTPD_401_UNAUTHORIZED, "Unauthorized");
@@ -197,14 +197,14 @@ esp_err_t admin_httpd_handler(httpd_req_t *req)
 // Handler for the API endpoint to control the motors
 esp_err_t handle_set_motor_angle(httpd_req_t *req) {
     // Authenticate the user and check if the role is admin
-    UserRole role = authenticateUser(req);
-    if (role != ROLE_ADMIN) {
+    authenticatedUserRole = authenticateUser(req);
+    if (authenticatedUserRole != ROLE_ADMIN) {
         // Return an error response indicating insufficient permissions
         httpd_resp_send_err(req, HTTPD_401_UNAUTHORIZED, "Insufficient permissions");
         return ESP_OK;
     }
 
-    // Extract the desired motor angles from the request parameters
+    // TODO:Extract the desired motor angles from the request parameters
     // Example: int angle1 = extract_angle_from_request(req, "angle1");
     //          int angle2 = extract_angle_from_request(req, "angle2");
     
@@ -219,8 +219,8 @@ esp_err_t handle_set_motor_angle(httpd_req_t *req) {
 // Handler for the API endpoint to get the motor current position
 esp_err_t handle_get_motor_angle(httpd_req_t *req){
     // Authenticate the user and check if the role is admin or user
-    UserRole role = authenticateUser(req);
-    if (role == ROLE_UNKNOWN) {
+    authenticatedUserRole = authenticateUser(req);
+    if (authenticatedUserRole == ROLE_UNKNOWN) {
         // Return an error response indicating unauthorized access
         httpd_resp_send_err(req, HTTPD_401_UNAUTHORIZED, "Unauthorized access");
         return ESP_OK;
@@ -234,14 +234,14 @@ esp_err_t handle_get_motor_angle(httpd_req_t *req){
 // Handler for the API endpoint to control the LEDs
 esp_err_t handle_set_ldr(httpd_req_t *req) {
     // Authenticate the user and check if the role is admin
-    UserRole role = authenticateUser(req);
-    if (role != ROLE_ADMIN) {
+    authenticatedUserRole = authenticateUser(req);
+    if (authenticatedUserRole != ROLE_ADMIN) {
         // Return an error response indicating insufficient permissions
         httpd_resp_send_err(req, HTTPD_401_UNAUTHORIZED, "Insufficient permissions");
         return ESP_OK;
     }
 
-    // Extract the desired LED state from the request parameters
+    // TODO:Extract the desired LED state from the request parameters
     // Example: bool ledState = extract_led_state_from_request(req, "ledState");
     
     // Set the LED GPIO pin state accordingly
@@ -255,14 +255,15 @@ esp_err_t handle_set_ldr(httpd_req_t *req) {
 // Handler for the API endpoint to get the LEDs current state
 esp_err_t handle_get_ldr(httpd_req_t *req){
     // Authenticate the user and check if the role is admin or user
-    UserRole role = authenticateUser(req);
-    if (role == ROLE_UNKNOWN) {
+    authenticatedUserRole = authenticateUser(req);
+    if (authenticatedUserRole == ROLE_UNKNOWN) {
         // Return an error response indicating unauthorized access
         httpd_resp_send_err(req, HTTPD_401_UNAUTHORIZED, "Unauthorized access");
         return ESP_OK;
     }
 
     //TODO: Implement handler
+    //gpio_get_level(GPIO_LDR)
 
     return ESP_OK;
 }
@@ -271,14 +272,14 @@ esp_err_t handle_get_ldr(httpd_req_t *req){
 // Handler for the API endpoint to control the LEDs
 esp_err_t handle_set_led(httpd_req_t *req) {
     // Authenticate the user and check if the role is admin
-    UserRole role = authenticateUser(req);
-    if (role != ROLE_ADMIN) {
+    authenticatedUserRole = authenticateUser(req);
+    if (authenticatedUserRole != ROLE_ADMIN) {
         // Return an error response indicating insufficient permissions
         httpd_resp_send_err(req, HTTPD_401_UNAUTHORIZED, "Insufficient permissions");
         return ESP_OK;
     }
 
-    // Extract the desired LED state from the request parameters
+    // TODO:Extract the desired LED state from the request parameters
     // Example: bool ledState = extract_led_state_from_request(req, "ledState");
     
     // Set the LED GPIO pin state accordingly
@@ -292,8 +293,8 @@ esp_err_t handle_set_led(httpd_req_t *req) {
 // Handler for the API endpoint to get the LEDs current state
 esp_err_t handle_get_led(httpd_req_t *req){
     // Authenticate the user and check if the role is admin or user
-    UserRole role = authenticateUser(req);
-    if (role == ROLE_UNKNOWN) {
+    authenticatedUserRole = authenticateUser(req);
+    if (authenticatedUserRole == ROLE_UNKNOWN) {
         // Return an error response indicating unauthorized access
         httpd_resp_send_err(req, HTTPD_401_UNAUTHORIZED, "Unauthorized access");
         return ESP_OK;
@@ -308,8 +309,8 @@ esp_err_t handle_get_led(httpd_req_t *req){
 // Implemented in order to test system behavior
 esp_err_t handle_set_smoke_sensor(httpd_req_t *req){
     // Authenticate the user and check if the role is admin
-    UserRole role = authenticateUser(req);
-    if (role != ROLE_ADMIN) {
+    authenticatedUserRole = authenticateUser(req);
+    if (authenticatedUserRole != ROLE_ADMIN) {
         // Return an error response indicating insufficient permissions
         httpd_resp_send_err(req, HTTPD_401_UNAUTHORIZED, "Insufficient permissions");
         return ESP_OK;
@@ -323,14 +324,14 @@ esp_err_t handle_set_smoke_sensor(httpd_req_t *req){
 // Handler for the API endpoint to access the smoke sensor data
 esp_err_t handle_get_smoke_sensor(httpd_req_t *req) {
     // Authenticate the user and check if the role is admin or user
-    UserRole role = authenticateUser(req);
-    if (role == ROLE_UNKNOWN) {
+    authenticatedUserRole = authenticateUser(req);
+    if (authenticatedUserRole == ROLE_UNKNOWN) {
         // Return an error response indicating unauthorized access
         httpd_resp_send_err(req, HTTPD_401_UNAUTHORIZED, "Unauthorized access");
         return ESP_OK;
     }
     
-    // Read the smoke sensor GPIO pin state
+    // TODO: Read the smoke sensor GPIO pin state
     // Example: bool smokeSensorState = gpio_get_level(GPIO_SMOKE_SENSOR);
     
     // Convert the smoke sensor state to a JSON response format
