@@ -43,6 +43,16 @@ extern const char *TASK_LOG_TAG;
  */
 extern const char *INTERRUPT_LOG_TAG;
 
+/**
+ * @brief Tag for gpio-related log messages
+ */
+extern const char *GPIO_TAG;
+
+/**
+ * @brief Tag for gpio-related log messages
+ */
+extern const char *GPIO_STATES_TAG;
+
 #endif  // LOGGING_UTILS_H
 
 /********************************* END OF FILE ********************************/

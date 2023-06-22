@@ -15,6 +15,8 @@ const char *ADMIN_TAG = "esp32-cam Admin";
 const char *WIFI_TAG = "esp32-cam Connect Wifi";
 const char *TASK_LOG_TAG = "esp32-cam Task Log";
 const char *INTERRUPT_LOG_TAG = "esp32-cam Interrupt Log";
+const char *GPIO_TAG = "esp32-cam GPIO Log";
+const char *GPIO_STATES_TAG = "esp32-cam GPIO States Log";
 
 /********************************* END OF FILE ********************************/
 /******************************************************************************/

@@ -10,7 +10,7 @@
 #define GPIO_INTERRUPTS_H_
 
 #include "../camera/camera_pins.h"
-#include <stdint.h>
+#include "../gpio_state/gpio_state.h"
 #include "esp_intr_alloc.h"
 #include "esp_attr.h"
 #include "driver/gpio.h"
@@ -37,11 +37,6 @@ esp_err_t init_isr(void);
 void pir_signal_isr(void* arg);
 void ldr_isr(void* arg);
 void smoke_sensor_isr(void* arg);
-
-// Getter functions for sensors' state
-uint8_t getPirState(void);
-uint8_t getLdrState(void);
-uint8_t getSmokeSensorState(void);
 
 #endif /* GPIO_INTERRUPTS_H_ */
 

@@ -262,11 +262,23 @@ esp_err_t handle_get_ldr(httpd_req_t *req){
         return ESP_OK;
     }
 
-    //TODO: Implement handler
-    //gpio_get_level(GPIO_LDR)
+    // Prepare the response JSON
+    cJSON *root = cJSON_CreateObject();
+    cJSON_AddStringToObject(root, "state", getLdrState() == 0 ? "0" : "1");
+
+    char *response = cJSON_Print(root);
+
+    // Set the response headers and send the response
+    httpd_resp_set_type(req, "application/json");
+    httpd_resp_send(req, response, strlen(response));
+
+    // Clean up
+    cJSON_Delete(root);
+    free(response);
 
     return ESP_OK;
 }
+
 
 
 // Handler for the API endpoint to control the LEDs
@@ -300,7 +312,19 @@ esp_err_t handle_get_led(httpd_req_t *req){
         return ESP_OK;
     }
 
-    //TODO: Implement handler
+    // Prepare the response JSON
+    cJSON *root = cJSON_CreateObject();
+    cJSON_AddStringToObject(root, "state", getLedState() == 0 ? "0" : "1");
+
+    char *response = cJSON_Print(root);
+
+    // Set the response headers and send the response
+    httpd_resp_set_type(req, "application/json");
+    httpd_resp_send(req, response, strlen(response));
+
+    // Clean up
+    cJSON_Delete(root);
+    free(response);
 
     return ESP_OK;
 }
@@ -331,13 +355,19 @@ esp_err_t handle_get_smoke_sensor(httpd_req_t *req) {
         return ESP_OK;
     }
     
-    // TODO: Read the smoke sensor GPIO pin state
-    // Example: bool smokeSensorState = gpio_get_level(GPIO_SMOKE_SENSOR);
-    
-    // Convert the smoke sensor state to a JSON response format
-    // Example: const char *response = create_json_response("smokeSensorState", smokeSensorState);
-    
     // Return the JSON response
+    cJSON *root = cJSON_CreateObject();
+    cJSON_AddStringToObject(root, "state", getSmokeSensorState() == 0 ? "0" : "1");
+
+    char *response = cJSON_Print(root);
+
+    // Set the response headers and send the response
+    httpd_resp_set_type(req, "application/json");
+    httpd_resp_send(req, response, strlen(response));
+
+    // Clean up
+    cJSON_Delete(root);
+    free(response);
 
     return ESP_OK;
 }

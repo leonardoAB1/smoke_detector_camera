@@ -10,6 +10,8 @@
 #define GPIO_UTILS_H_
 #include "../camera/camera_pins.h"
 #include "../motor_control/motor_control.h"
+#include "../gpio_state/gpio_state.h"
+#include "../logging/logging_utils.h"
 #include "driver/gpio.h"
 #include "driver/ledc.h"
 #include "freertos/FreeRTOS.h"

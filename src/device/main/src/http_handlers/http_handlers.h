@@ -22,6 +22,9 @@
 #include "../logging/logging_utils.h"
 #include "../user_roles/user_roles.h"
 #include "../base64/base64_utils.h"
+#include "../camera/camera_pins.h"
+#include "../gpio_interrupts/gpio_interrupts.h"
+#include "../gpio_state/gpio_state.h"
 
 /**
  * @brief       The authenticated user role.
