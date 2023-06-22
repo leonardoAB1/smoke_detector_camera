@@ -76,6 +76,15 @@ void pir_signal_isr(void* arg)
 void ldr_isr(void* arg)
 {
     checkGPIOState(gpio_get_level(GPIO_LDR), &ldrState);
+    switch (ldrState)
+    {
+        case 0:
+            gpio_set_level(GPIO_LEDs, LOW);
+            break;
+        case 1:
+            gpio_set_level(GPIO_LEDs, HIGH);
+            break;
+    }
 }
 
 // ISR for GPIO_SMOKE_SENSOR pin
@@ -87,16 +96,34 @@ void smoke_sensor_isr(void* arg)
 // Getter functions for sensors' state
 uint8_t getPirState(void)
 {
+    if (pirState != 0 && pirState != 1)
+    {
+        // Log an error or handle the error condition appropriately
+        ESP_LOGE(INTERRUPT_LOG_TAG, "Invalid PIR state: %d", pirState);
+    }
+
     return pirState;
 }
 
 uint8_t getLdrState(void)
 {
+    if (ldrState != 0 && ldrState != 1)
+    {
+        // Log an error or handle the error condition appropriately
+        ESP_LOGE(INTERRUPT_LOG_TAG, "Invalid LDR state: %d", ldrState);
+    }
+
     return ldrState;
 }
 
 uint8_t getSmokeSensorState(void)
 {
+    if (smokeState != 0 && smokeState != 1)
+    {
+        // Log an error or handle the error condition appropriately
+        ESP_LOGE(INTERRUPT_LOG_TAG, "Invalid smoke sensor state: %d", smokeState);
+    }
+    
     return smokeState;
 }
 

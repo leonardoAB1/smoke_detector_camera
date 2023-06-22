@@ -15,6 +15,7 @@
 #include "esp_attr.h"
 #include "driver/gpio.h"
 #include "../logging/logging_utils.h"
+#include "../gpio_utils/gpio_utils.h"
 
 /**
  * @brief Interrupt configuration structure used to initialize interrupts.

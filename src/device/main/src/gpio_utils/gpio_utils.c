@@ -41,9 +41,6 @@ esp_err_t init_gpio(void) {
     // Initialize normal GPIO pins for LEDs as digital output
     gpio_reset_pin(GPIO_LEDs);
     gpio_set_direction(GPIO_LEDs, GPIO_MODE_OUTPUT);
-
-    //Init interrupt gpios
-    init_isr();
    
     return ESP_OK;
 }

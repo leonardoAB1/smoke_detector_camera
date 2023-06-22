@@ -20,6 +20,7 @@
 #include "web_server/web_server.c"
 #include "http_handlers/http_handlers.h"
 #include "task_utils/task_utils.h"
+#include "gpio_interrupts/gpio_interrupts.h"
 
 // Boundary for multipart/x-mixed-replace content type
 #define PART_BOUNDARY "123456789000000000000987654321"
@@ -46,6 +47,9 @@ void app_main(void)
 
     // Initialize GPIO pins
     init_gpio();
+
+    //Init interrupt gpios
+    init_isr();
 
     //Initialize FreeRTOS Tasks
     //initialize_tasks();
