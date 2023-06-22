@@ -23,6 +23,7 @@
 #include "cJSON.h"
 
 #include "../logging/logging_utils.h"
+#include "../gpio_utils/gpio_utils.h"
 
 #define MAXIMUM_RETRY 5
 

@@ -14,11 +14,28 @@
 #include "esp_intr_alloc.h"
 #include "esp_attr.h"
 #include "driver/gpio.h"
+#include "../logging/logging_utils.h"
+
+/**
+ * @brief Interrupt configuration structure used to initialize interrupts.
+ */
+typedef struct
+{
+    gpio_num_t gpioNum;                /*< GPIO number for the interrupt pin */
+    gpio_isr_t isrHandler;             /*< Pointer to the interrupt service routine */
+    void *userData;                    /*< User data to be passed to the ISR */
+    gpio_int_type_t interruptType;     /*< Interrupt type (e.g., GPIO_INTR_ANYEDGE) */
+} InterruptInitParams_t;
+
+/**
+ * @brief Initializes the interrupts.
+ */
+esp_err_t init_isr(void);
 
 // Function declarations for the interrupt service routines
-void IRAM_ATTR pir_signal_isr(void* arg);
-void IRAM_ATTR ldr_isr(void* arg);
-void IRAM_ATTR smoke_sensor_isr(void* arg);
+void pir_signal_isr(void* arg);
+void ldr_isr(void* arg);
+void smoke_sensor_isr(void* arg);
 
 // Getter functions for sensors' state
 uint8_t getPirState(void);

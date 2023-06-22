@@ -14,6 +14,7 @@ const char *WEBSERVER_TAG = "esp32-cam Webserver";
 const char *ADMIN_TAG = "esp32-cam Admin";
 const char *WIFI_TAG = "esp32-cam Connect Wifi";
 const char *TASK_LOG_TAG = "esp32-cam Task Log";
+const char *INTERRUPT_LOG_TAG = "esp32-cam Interrupt Log";
 
 /********************************* END OF FILE ********************************/
 /******************************************************************************/
