@@ -44,6 +44,18 @@ void move_motor(int motor, int duty);
  */
 int getDutyCycleFromAngle(float angle);
 
+/**
+ * @brief Implement the code to move the motors according to the default pattern (0-180-0)
+ * 
+ */
+void move_motors_default();
+
+/**
+ * @brief Stop the motors from following the default pattern
+ * 
+ */
+void stop_motors_default();
+
 #endif /* MOTOR_CONTROL_H_ */
 
 /********************************* END OF FILE ********************************/

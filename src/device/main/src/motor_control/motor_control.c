@@ -30,5 +30,24 @@ int getDutyCycleFromAngle(float angle) {
     return duty;
 }
 
+void move_motors_default() {
+    for (int angle = 0; angle <= 180; angle++) {
+        int duty = getDutyCycleFromAngle(angle);
+        move_motor(MOTOR_1, duty);
+        move_motor(MOTOR_2, duty);
+    }
+    for (int angle = 180; angle >= 0; angle--) {
+        int duty = getDutyCycleFromAngle(angle);
+        move_motor(MOTOR_1, duty);
+        move_motor(MOTOR_2, duty);
+    }
+}
+
+void stop_motors_default() {
+    ledc_stop(LEDC_LOW_SPEED_MODE, MOTOR_1, 0);
+    ledc_stop(LEDC_LOW_SPEED_MODE, MOTOR_2, 0);
+}
+
+
 /********************************* END OF FILE ********************************/
 /******************************************************************************/
