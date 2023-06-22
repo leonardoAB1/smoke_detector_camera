@@ -48,7 +48,7 @@ void app_main(void)
     init_gpio();
 
     //Initialize FreeRTOS Tasks
-    initialize_tasks();
+    //initialize_tasks();
 
     // Connect to WiFi
     connect_wifi();
