@@ -19,7 +19,7 @@ void start_webserver(void)
     httpd_config_t config = HTTPD_DEFAULT_CONFIG();
     //config.core_id = 0;  // Set the core ID to 0 (core 0)
     config.max_uri_handlers = 20;
-    //config.task_priority    = tskIDLE_PRIORITY+1;
+    config.task_priority    = tskIDLE_PRIORITY+1;
     //config.uri_match_fn     = httpd_uri_match_wildcard;
 
     // Start the HTTP server
@@ -59,7 +59,7 @@ void start_webserver(void)
         httpd_register_uri_handler(server, &admin_uri);
 
         httpd_uri_t motor_01_set_uri = {
-            .uri = "/motor_01/set",
+            .uri = "/motor/set",
             .method = HTTP_POST,
             .handler = handle_set_motor_angle, //needs motor number as a header
             .user_ctx = NULL
@@ -67,28 +67,12 @@ void start_webserver(void)
         httpd_register_uri_handler(server, &motor_01_set_uri);
 
         httpd_uri_t motor_01_get_uri = {
-            .uri = "/motor_01/get",
+            .uri = "/motor/get",
             .method = HTTP_GET,
             .handler = handle_get_motor_angle, //needs motor number as a header
             .user_ctx = NULL
         };
         httpd_register_uri_handler(server, &motor_01_get_uri);
-
-        httpd_uri_t motor_02_set_uri = {
-        .uri = "/motor_02/set",
-        .method = HTTP_POST,
-        .handler = handle_set_motor_angle,
-        .user_ctx = NULL
-        };
-        httpd_register_uri_handler(server, &motor_02_set_uri);
-
-        httpd_uri_t motor_02_get_uri = {
-            .uri = "/motor_02/get",
-            .method = HTTP_GET,
-            .handler = handle_get_motor_angle,
-            .user_ctx = NULL
-        };
-        httpd_register_uri_handler(server, &motor_02_get_uri);
 
         httpd_uri_t ldr_set_uri = {
             .uri = "/ldr/set",
