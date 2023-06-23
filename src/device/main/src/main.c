@@ -52,13 +52,16 @@ void app_main(void)
     init_isr();
 
     //Initialize FreeRTOS Tasks
-    //initialize_tasks();
+    initialize_tasks();
 
     // Connect to WiFi
     connect_wifi();
 
     // Start the web server
     start_webserver();
+
+    // Move motors with default values
+    //move_motors_default();
 }
 
 /********************************* END OF FILE ********************************/

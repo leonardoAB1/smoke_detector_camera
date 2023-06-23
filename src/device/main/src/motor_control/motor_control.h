@@ -56,6 +56,12 @@ void move_motors_default();
  */
 void stop_motors_default();
 
+// Motor 1 getter
+float get_motor1_angle(void);
+
+// Motor 2 getter
+float get_motor2_angle(void);
+
 #endif /* MOTOR_CONTROL_H_ */
 
 /********************************* END OF FILE ********************************/

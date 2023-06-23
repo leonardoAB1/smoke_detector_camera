@@ -226,7 +226,48 @@ esp_err_t handle_get_motor_angle(httpd_req_t *req){
         return ESP_OK;
     }
 
-    //TODO: Implement handler
+    // Get the motor number from the request header
+    int motorNumber = -1;
+    size_t motorHeaderLen = httpd_req_get_hdr_value_len(req, "Motor-Number");
+    if (motorHeaderLen > 0)
+    {
+        char* motorHeader = malloc(motorHeaderLen + 1);
+        httpd_req_get_hdr_value_str(req, "Motor-Number", motorHeader, motorHeaderLen + 1);
+        motorNumber = atoi(motorHeader);
+        free(motorHeader);
+    }
+
+    // Check the motor number and retrieve the corresponding motor angle
+    float motorAngle = -1.0;
+    if (motorNumber == 1)
+    {
+        motorAngle = get_motor1_angle();
+    }
+    else if (motorNumber == 2)
+    {
+        motorAngle = get_motor2_angle();
+    }
+    else
+    {
+        // Return an error response for an invalid motor number
+        httpd_resp_send_err(req, HTTPD_400_BAD_REQUEST, "Invalid motor number");
+        return ESP_OK;
+    }
+
+    // Create a JSON response payload with the motor angle
+    cJSON *json = cJSON_CreateObject();
+    cJSON_AddNumberToObject(json, "motor_angle", motorAngle);
+    char *payload = cJSON_PrintUnformatted(json);
+    cJSON_Delete(json);
+
+    // Set the Content-Type header to application/json
+    httpd_resp_set_type(req, "application/json");
+
+    // Send the JSON response payload
+    httpd_resp_send(req, payload, strlen(payload));
+
+    // Free the allocated JSON payload
+    free(payload);
 
     return ESP_OK;
 }

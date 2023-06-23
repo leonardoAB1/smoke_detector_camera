@@ -25,6 +25,7 @@
 #include "../camera/camera_pins.h"
 #include "../gpio_interrupts/gpio_interrupts.h"
 #include "../gpio_state/gpio_state.h"
+#include "../motor_control/motor_control.h"
 
 /**
  * @brief       The authenticated user role.
