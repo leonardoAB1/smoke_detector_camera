@@ -23,15 +23,6 @@ EventGroupHandle_t s_wifi_event_group;
 #define WIFI_CONNECTED_BIT BIT0
 #define WIFI_FAIL_BIT BIT1
 
-/**
- * @brief Event handler function for WiFi events.
- * 
- * @param arg Argument passed to the event handler
- * @param event_base Base of the event
- * @param event_id ID of the event
- * @param event_data Data associated with the event
- * @return esp_err_t Returns ESP_OK if the event is handled successfully, otherwise returns an error code.
- */
 static esp_err_t wifi_event_handler(void *arg, esp_event_base_t event_base, int32_t event_id, void *event_data)
 {
     if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_START)
@@ -70,11 +61,6 @@ static esp_err_t wifi_event_handler(void *arg, esp_event_base_t event_base, int3
     return ESP_OK;
 }
 
-/**
- * @brief Connects to Wi-Fi.
- * 
- * @return esp_err_t Returns ESP_OK if the connection is successful, otherwise returns an error code.
- */
 esp_err_t connect_wifi(void)
 {
     // Create event group

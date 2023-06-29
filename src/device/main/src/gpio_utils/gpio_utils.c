@@ -13,28 +13,28 @@ esp_err_t init_gpio(void) {
     // Motor1
     ledc_channel_config_t channelConfigMotor1 = {0};
     channelConfigMotor1.gpio_num     = GPIO_SERVO_1;
-    channelConfigMotor1.speed_mode   = LEDC_HIGH_SPEED_MODE;
-    channelConfigMotor1.channel      = LEDC_CHANNEL_0;
+    channelConfigMotor1.speed_mode   = MOTOR_1_SPEED_MODE;
+    channelConfigMotor1.channel      = MOTOR_1_CHANNEL;
     channelConfigMotor1.intr_type    = LEDC_INTR_DISABLE;
-    channelConfigMotor1.timer_sel    = LEDC_TIMER_1;
-    channelConfigMotor1.duty         = 0; //Initial Duty Cycle
+    channelConfigMotor1.timer_sel    = LEDC_TIMER_2;
+    channelConfigMotor1.duty         = 200; //Initial Duty Cycle
     ledc_channel_config(&channelConfigMotor1);
     
     // Motor2
     ledc_channel_config_t channelConfigMotor2 = {0};
     channelConfigMotor2.gpio_num     = GPIO_SERVO_2;
-    channelConfigMotor2.speed_mode   = LEDC_HIGH_SPEED_MODE;
-    channelConfigMotor2.channel      = LEDC_CHANNEL_1;
+    channelConfigMotor2.speed_mode   = MOTOR_2_SPEED_MODE;
+    channelConfigMotor2.channel      = MOTOR_2_CHANNEL;
     channelConfigMotor2.intr_type    = LEDC_INTR_DISABLE;
-    channelConfigMotor2.timer_sel    = LEDC_TIMER_1;
-    channelConfigMotor2.duty         = 0; //Initial Duty Cycle
+    channelConfigMotor2.timer_sel    = LEDC_TIMER_2;
+    channelConfigMotor2.duty         = 200; //Initial Duty Cycle
     ledc_channel_config(&channelConfigMotor2);
 
     //Initialize Timer
     ledc_timer_config_t timerConfig = {0};
     timerConfig.speed_mode          = LEDC_HIGH_SPEED_MODE;
     timerConfig.duty_resolution     = PWM_RESOLUTION;
-    timerConfig.timer_num           = LEDC_TIMER_1;
+    timerConfig.timer_num           = LEDC_TIMER_2;
     timerConfig.freq_hz             = PWM_FREQUENCY; //50 Hz
     ledc_timer_config(&timerConfig);
 

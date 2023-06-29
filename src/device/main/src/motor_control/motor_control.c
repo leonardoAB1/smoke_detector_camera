@@ -4,89 +4,71 @@
  * @date        12 Jun 2023
  * 
  * @note        This code is written in C and is used on an ESP32-CAM development board.
+ *              Based on servo driver from the ESP-IoT-Solution library.
  *
  *******************************************************************************/
 #include "../motor_control/motor_control.h"
 
-// Global variables for motor angles
-volatile float motor1_angle = 0.0f;
-volatile float motor2_angle = 0.0f;
-
-// Declare a global flag variable
-volatile bool stop_motors = false;
-
-void move_motor(int motor, int duty) {
-    // Implement the code to control the specified motor with the given angle
-    //ledc_set_duty(LEDC_LOW_SPEED_MODE, motor, duty);
-    //ledc_update_duty(LEDC_LOW_SPEED_MODE, motor); 
-    vTaskDelay(2000/portTICK_PERIOD_MS);
-    //ledc_stop(LEDC_LOW_SPEED_MODE, motor, 0);
-
-    // Update the current angle based on the motor
-    if (motor == MOTOR_1)
-    {
-        motor1_angle = (duty / 255.0f) * 180.0f;
-    }
-    else if (motor == MOTOR_2)
-    {
-        motor2_angle = (duty / 255.0f) * 180.0f;
-    }
+Motor create_motor(ledc_mode_t speed_mode, uint8_t channel) {
+    Motor motor;
+    motor.speed_mode = speed_mode;
+    motor.channel = channel;
+    motor.angle = 0.0f;
+    motor.is_active = true;
+    return motor;
 }
 
-int getDutyCycleFromAngle(float angle) {
-    // Calculate the pulse width (in milliseconds) corresponding to the given angle
-    float dutyMs = (SERVO_MS_MAX - SERVO_MS_MIN) / 180.0 * angle + SERVO_MS_MIN;
+//Global motor strucures
+Motor motor1;
+Motor motor2;
 
-    // Calculate the duty cycle value based on the desired PWM frequency and resolution
-    // Convert the pulse width from milliseconds to seconds by dividing by 1000
-    // Multiply by the PWM frequency to obtain the number of PWM cycles per second
-    // Multiply by the total number of steps (2^PWM_RESOLUTION) to get the duty cycle value
-    int duty = (int)(dutyMs / (1000.0 / PWM_FREQUENCY) * (pow(2, PWM_RESOLUTION) - 1));
+void initialize_motors()
+{
+    motor1 = create_motor(MOTOR_1_SPEED_MODE, MOTOR_1_CHANNEL);
+    motor2 = create_motor(MOTOR_2_SPEED_MODE, MOTOR_2_CHANNEL);
+}
 
-    // Return the calculated duty cycle
+void start_motor_movement(Motor *motor) {
+    motor->is_active = true;
+}
+
+void stop_motor_movement(Motor *motor) {
+    motor->is_active = false;
+}
+
+esp_err_t move_motor(const Motor *motor, float angle) {
+    MOTOR_CHECK(motor->speed_mode < LEDC_SPEED_MODE_MAX, "LEDC speed mode invalid", ESP_ERR_INVALID_ARG);
+    MOTOR_CHECK(motor->channel < LEDC_CHANNEL_MAX, "LEDC channel number too large", ESP_ERR_INVALID_ARG);
+    MOTOR_CHECK(angle >= 0.0f, "Angle can't be negative", ESP_ERR_INVALID_ARG);
+
+    esp_err_t result;
+    uint32_t duty = calculate_duty(angle);
+    result = ledc_set_duty(motor->speed_mode, (ledc_channel_t)motor->channel, duty);
+    result |= ledc_update_duty(motor->speed_mode, (ledc_channel_t)motor->channel);
+
+    MOTOR_CHECK(ESP_OK == result, "write servo angle failed", ESP_FAIL);
+
+    uint32_t current_duty = ledc_get_duty(motor->speed_mode, (ledc_channel_t)motor->channel);
+    ESP_LOGI(MOTOR_TAG, "Actual motor duty cycle for speed mode %d and channel %d: %lu Angle: %.2f Duty: %lu", motor->speed_mode, motor->channel, (unsigned long)current_duty, motor->angle, (unsigned long)duty);
+
+    return ESP_OK;
+}
+
+uint32_t calculate_duty(float angle) {
+    uint32_t duty  = (uint32_t)(SERVO_WIDTH_MIN_US + ((SERVO_WIDTH_MAX_US - SERVO_WIDTH_MIN_US) * angle) / SERVO_MAX_ANGLE);
     return duty;
 }
 
-void move_motors_default() {
-    for (int angle = 0; angle <= 180; angle++) {
-        // Check if stop_motors flag is set
-        if (stop_motors) {
-            break; // Exit the loop if stop_motors is true
-        }
-        
-        int duty = getDutyCycleFromAngle(angle);
-        move_motor(MOTOR_1, duty);
-        move_motor(MOTOR_2, duty);
-    }
-    
-    for (int angle = 180; angle >= 0; angle--) {
-        // Check if stop_motors flag is set
-        if (stop_motors) {
-            break; // Exit the loop if stop_motors is true
-        }
-        
-        int duty = getDutyCycleFromAngle(angle);
-        move_motor(MOTOR_1, duty);
-        move_motor(MOTOR_2, duty);
-    }
-}
-
-void stop_motors_default() {
-    stop_motors = true; // Set the stop_motors flag to true
-    //ledc_stop(LEDC_LOW_SPEED_MODE, MOTOR_1, 0);
-    //ledc_stop(LEDC_LOW_SPEED_MODE, MOTOR_2, 0);
-}
-
-// Motor 1 getter
-float get_motor1_angle(void)
+// Motor getter
+float get_motor_angle(const Motor *motor)
 {
-    return motor1_angle;
+    return motor->angle;
 }
 
-// Motor 2 getter
-float get_motor2_angle(void)
+// Motor setter
+void set_motor_angle(Motor *motor, float angle)
 {
-    return motor2_angle;
+    motor->angle = angle;
 }
 
 /********************************* END OF FILE ********************************/

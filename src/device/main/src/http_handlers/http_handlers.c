@@ -217,10 +217,12 @@ esp_err_t handle_set_motor_angle(httpd_req_t *req) {
 }
 
 // Handler for the API endpoint to get the motor current position
-esp_err_t handle_get_motor_angle(httpd_req_t *req){
+esp_err_t handle_get_motor_angle(httpd_req_t *req)
+{
     // Authenticate the user and check if the role is admin or user
     authenticatedUserRole = authenticateUser(req);
-    if (authenticatedUserRole == ROLE_UNKNOWN) {
+    if (authenticatedUserRole == ROLE_UNKNOWN)
+    {
         // Return an error response indicating unauthorized access
         httpd_resp_send_err(req, HTTPD_401_UNAUTHORIZED, "Unauthorized access");
         return ESP_OK;
@@ -231,7 +233,7 @@ esp_err_t handle_get_motor_angle(httpd_req_t *req){
     size_t motorHeaderLen = httpd_req_get_hdr_value_len(req, "Motor-Number");
     if (motorHeaderLen > 0)
     {
-        char* motorHeader = malloc(motorHeaderLen + 1);
+        char *motorHeader = malloc(motorHeaderLen + 1);
         httpd_req_get_hdr_value_str(req, "Motor-Number", motorHeader, motorHeaderLen + 1);
         motorNumber = atoi(motorHeader);
         free(motorHeader);
@@ -241,11 +243,11 @@ esp_err_t handle_get_motor_angle(httpd_req_t *req){
     float motorAngle = -1.0;
     if (motorNumber == 1)
     {
-        motorAngle = get_motor1_angle();
+        motorAngle = get_motor_angle(&motor1);
     }
     else if (motorNumber == 2)
     {
-        motorAngle = get_motor2_angle();
+        motorAngle = get_motor_angle(&motor2);
     }
     else
     {

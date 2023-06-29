@@ -69,7 +69,9 @@
 			"esp_http_server.h": "c",
 			"esp_task_wdt.h": "c",
 			"esp_camera.h": "c",
-			"gpio_interrupts.h": "c"
+			"gpio_interrupts.h": "c",
+			"gpio_state.h": "c",
+			"random": "c"
 		},
 		"liveServer.settings.multiRootWorkspaceName": "frontend"
 	}

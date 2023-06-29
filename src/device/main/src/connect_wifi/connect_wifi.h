@@ -28,6 +28,17 @@
 #define MAXIMUM_RETRY 5
 
 /**
+ * @brief Event handler function for WiFi events.
+ * 
+ * @param arg Argument passed to the event handler
+ * @param event_base Base of the event
+ * @param event_id ID of the event
+ * @param event_data Data associated with the event
+ * @return esp_err_t Returns ESP_OK if the event is handled successfully, otherwise returns an error code.
+ */
+static esp_err_t wifi_event_handler(void *arg, esp_event_base_t event_base, int32_t event_id, void *event_data);
+
+/**
  * @brief Connects to Wi-Fi.
  * 
  * @return esp_err_t Returns ESP_OK if the connection is successful, otherwise returns an error code.

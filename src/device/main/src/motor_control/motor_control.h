@@ -11,56 +11,55 @@
 
 #include <stdbool.h>
 #include <math.h>
+#include "driver/ledc.h"
 #include "../gpio_utils/gpio_utils.h"
 
-#define MOTOR_1 LEDC_CHANNEL_0
-#define MOTOR_2 LEDC_CHANNEL_1
+#define MOTOR_1_CHANNEL LEDC_CHANNEL_0
+#define MOTOR_2_CHANNEL LEDC_CHANNEL_1
+
+#define MOTOR_1_SPEED_MODE LEDC_HIGH_SPEED_MODE
+#define MOTOR_2_SPEED_MODE LEDC_HIGH_SPEED_MODE
 
 #define PWM_FREQUENCY 50
 #define PWM_RESOLUTION LEDC_TIMER_13_BIT
 
-#define SERVO_MS_MIN 0.06 //0.06ms
-#define SERVO_MS_MAX 2.0  //2ms
+#define SERVO_FULL_DUTY ((1 << PWM_RESOLUTION) - 1)  // Maximum duty cycle value
 
-/**
- * @brief Moves the specified motor to a given angle.
- * 
- * @param motor The motor to move (MOTOR_1 or MOTOR_2).
- * @param duty Desired motor duty cycle.
- * 
- * @note This function allows admins to control the servo motors.
- */
-void move_motor(int motor, int duty);
+#define SERVO_WIDTH_MIN_US 500
+#define SERVO_WIDTH_MAX_US 2500
 
-/**
- * @brief Calculates the duty cycle based on the given angle.
- * 
- * @param angle The angle (in degrees) to calculate the duty cycle.
- * @return The calculated duty cycle.
- * 
- * @note This function uses the LEDC library to control the duty cycle of the ESP32.
- *       The duty cycle is calculated based on the servo pulse width range defined by
- *       SERVO_MS_MIN and SERVO_MS_MAX, and the desired PWM frequency and resolution.
- */
-int getDutyCycleFromAngle(float angle);
+#define SERVO_MAX_ANGLE 180
 
-/**
- * @brief Implement the code to move the motors according to the default pattern (0-180-0)
- * 
- */
-void move_motors_default();
+#define MOTOR_CHECK(a, str, ret_val) \
+    if (!(a)) { \
+        ESP_LOGE(MOTOR_TAG, "%s(%d): %s", __FUNCTION__, __LINE__, str); \
+        return (ret_val); \
+    }
 
-/**
- * @brief Stop the motors from following the default pattern
- * 
- */
-void stop_motors_default();
+typedef struct {
+    ledc_mode_t speed_mode;
+    uint8_t channel;
+    float angle;
+    bool is_active;
+} Motor;
 
-// Motor 1 getter
-float get_motor1_angle(void);
+Motor create_motor(ledc_mode_t speed_mode, uint8_t channel);
 
-// Motor 2 getter
-float get_motor2_angle(void);
+void initialize_motors(void);
+
+void start_motor_movement(Motor *motor);
+
+void stop_motor_movement(Motor *motor);
+
+esp_err_t move_motor(const Motor *motor, float angle);
+
+uint32_t calculate_duty(float angle);
+
+// Motor getter
+float get_motor_angle(const Motor *motor);
+
+// Motor setter
+void set_motor_angle(Motor *motor, float angle);
 
 #endif /* MOTOR_CONTROL_H_ */
 

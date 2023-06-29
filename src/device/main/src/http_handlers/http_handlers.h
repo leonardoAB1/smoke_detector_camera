@@ -70,6 +70,9 @@ esp_err_t handle_get_led(httpd_req_t *req);
 esp_err_t handle_set_smoke_sensor(httpd_req_t *req);
 esp_err_t handle_get_smoke_sensor(httpd_req_t *req);
 
+extern Motor motor1;
+extern Motor motor2;
+
 #endif  // HTTP_HANDLERS_H
 
 /********************************* END OF FILE ********************************/

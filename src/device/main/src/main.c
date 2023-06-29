@@ -19,6 +19,7 @@
 #include "motor_control/motor_control.h"
 #include "web_server/web_server.c"
 #include "http_handlers/http_handlers.h"
+#include "motor_control/motor_control.h"
 #include "task_utils/task_utils.h"
 #include "gpio_interrupts/gpio_interrupts.h"
 
@@ -51,6 +52,9 @@ void app_main(void)
     //Init interrupt gpios
     init_isr();
 
+    //Init motor structures
+    initialize_motors();
+
     //Initialize FreeRTOS Tasks
     initialize_tasks();
 
@@ -60,8 +64,6 @@ void app_main(void)
     // Start the web server
     start_webserver();
 
-    // Move motors with default values
-    //move_motors_default();
 }
 
 /********************************* END OF FILE ********************************/

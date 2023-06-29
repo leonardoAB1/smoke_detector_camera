@@ -17,6 +17,7 @@ const char *TASK_LOG_TAG = "esp32-cam Task Log";
 const char *INTERRUPT_LOG_TAG = "esp32-cam Interrupt Log";
 const char *GPIO_TAG = "esp32-cam GPIO Log";
 const char *GPIO_STATES_TAG = "esp32-cam GPIO States Log";
+const char *MOTOR_TAG = "esp32-cam Motor Log";
 
 /********************************* END OF FILE ********************************/
 /******************************************************************************/

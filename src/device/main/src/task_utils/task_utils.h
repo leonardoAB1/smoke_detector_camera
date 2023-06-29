@@ -15,11 +15,11 @@
 #include "../logging/logging_utils.h"
 
 // Define the stack depth and priority for the DecrementTask
-#define TASK_MOTOR_ADMIN_CONTROL_STACK_DEPTH configMINIMAL_STACK_SIZE
+#define TASK_MOTOR_ADMIN_CONTROL_STACK_DEPTH 2048
 #define TASK_MOTOR_ADMIN_CONTROL_PRIORITY tskIDLE_PRIORITY+10
 
 // Define the stack depth and priority for the Default Control Task
-#define TASK_MOTOR_DEFAULT_CONTROL_STACK_DEPTH configMINIMAL_STACK_SIZE
+#define TASK_MOTOR_DEFAULT_CONTROL_STACK_DEPTH 2048
 #define TASK_MOTOR_DEFAULT_CONTROL_PRIORITY tskIDLE_PRIORITY+10
 
 #define MOTOR_ANGLES_QUEUE_ITEM_NUMBER 10  
@@ -73,6 +73,19 @@ void MotorAdminControlTask(void* pvParameters) __attribute__((noreturn));
  * @param pvParameters Pointer to the task parameters.
  */
 void MotorDefaultControlTask(void* pvParameters) __attribute__((noreturn));
+
+extern Motor motor1;
+extern Motor motor2;
+
+/**
+ * @param task_handle: The task handle name
+ * @param stack_allotment:  How much stack space did you allocate to it when you created it
+ *
+ * Returns: float with the % of stacke used
+ * Example:   printf("Stack Used %04.1f%%\r\n", GetTaskHighWaterMarkPercent(xTask1, 2048) );
+ *Notes:
+ */
+float GetTaskHighWaterMarkPercent( TaskHandle_t task_handle, uint32_t stack_allotment );
 
 #endif /* _TASKS_H_ */
 

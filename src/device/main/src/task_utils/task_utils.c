@@ -58,7 +58,7 @@ void initialize_tasks(void)
 void MotorAdminControlTask(void *pvParameters)
 {
     TaskParams_t *params = (TaskParams_t *)pvParameters;
-	if (params == NULL)
+    if (params == NULL)
     {
         // Handle the error or return early
         // For example, you can log an error message and delete the task
@@ -67,50 +67,101 @@ void MotorAdminControlTask(void *pvParameters)
 
     while (1)
     {
-        // Reset the watchdog timer
-        //esp_task_wdt_reset();
-
         MotorAngles_t angles;
         if (xQueueReceive((QueueHandle_t)params->motorAnglesQueue, &angles, portMAX_DELAY) == pdTRUE)
         {
             // Acquire motor1Mutex before accessing MOTOR_1
             xSemaphoreTake(motor1Mutex, portMAX_DELAY);
-            move_motor(MOTOR_1, getDutyCycleFromAngle(angles.angle1));
+            if (motor1.is_active)
+            {
+                move_motor(&motor1, angles.angle1);
+            }
             xSemaphoreGive(motor1Mutex);
 
             // Acquire motor2Mutex before accessing MOTOR_2
             xSemaphoreTake(motor2Mutex, portMAX_DELAY);
-            move_motor(MOTOR_2, getDutyCycleFromAngle(angles.angle2));
+            if (motor2.is_active)
+            {
+                move_motor(&motor2, angles.angle2);
+            }
             xSemaphoreGive(motor2Mutex);
         }
 
         // Delay between iterations to control the task execution rate
-        vTaskDelay(pdMS_TO_TICKS(100));  // Delay for 100 milliseconds
+        vTaskDelay(pdMS_TO_TICKS(300));  // Delay for 100 milliseconds
     }
+    vTaskDelete(NULL);
 }
 
 void MotorDefaultControlTask(void *pvParameters)
 {
+    int angle = 0;
+    bool increasing = true;
+    double ewma_angle = 0.0;  // Exponentially Weighted Moving Average
+    double alpha = 0.1; // Smoothing factor for the EWMA
+    double threshold = 0.9; // Threshold for comparing with angle
+
     while (1)
     {
-        // Reset the watchdog timer
-        //esp_task_wdt_reset();
-
         // Acquire motor1Mutex before accessing MOTOR_1
         xSemaphoreTake(motor1Mutex, portMAX_DELAY);
-        move_motor(MOTOR_1, getDutyCycleFromAngle(0));
+        if (motor1.is_active)
+        {
+            move_motor(&motor1, ewma_angle);
+            set_motor_angle(&motor1, ewma_angle);
+        }
         xSemaphoreGive(motor1Mutex);
-
-        vTaskDelete(NULL);
 
         // Acquire motor2Mutex before accessing MOTOR_2
         xSemaphoreTake(motor2Mutex, portMAX_DELAY);
-        move_motor(MOTOR_2, getDutyCycleFromAngle(0));
+        if (motor2.is_active)
+        {
+            move_motor(&motor2, ewma_angle);
+            set_motor_angle(&motor2, ewma_angle);
+        }
         xSemaphoreGive(motor2Mutex);
 
+        // Update the EWMA with the current angle change
+        ewma_angle = alpha * angle + (1 - alpha) * ewma_angle;
+
+        if (ewma_angle >= threshold * angle)
+        {
+            if (increasing)
+            {
+                if (angle < SERVO_MAX_ANGLE)
+                    angle++;
+                else
+                    increasing = false;
+            }
+            else
+            {
+                if (angle > 0)
+                    angle--;
+                else
+                    increasing = true;
+            }
+        }
+
         // Delay between iterations to control the task execution rate
-        vTaskDelay(pdMS_TO_TICKS(1000));  // Delay for 1 second
+        vTaskDelay(pdMS_TO_TICKS(1000));  // Delay for 1000 milliseconds
     }
+
+    vTaskDelete(NULL);
+}
+
+float GetTaskHighWaterMarkPercent( TaskHandle_t task_handle, uint32_t stack_allotment )
+{
+  UBaseType_t uxHighWaterMark;
+  uint32_t diff;
+  float result;
+
+  uxHighWaterMark = uxTaskGetStackHighWaterMark( task_handle );
+
+  diff = stack_allotment - uxHighWaterMark;
+
+  result = ( (float)diff / (float)stack_allotment ) * 100.0;
+
+  return result;
 }
 
 

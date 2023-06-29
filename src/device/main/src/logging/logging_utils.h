@@ -53,6 +53,11 @@ extern const char *GPIO_TAG;
  */
 extern const char *GPIO_STATES_TAG;
 
+/**
+ * @brief Tag for motor-related log messages
+ */
+extern const char *MOTOR_TAG;
+
 #endif  // LOGGING_UTILS_H
 
 /********************************* END OF FILE ********************************/
