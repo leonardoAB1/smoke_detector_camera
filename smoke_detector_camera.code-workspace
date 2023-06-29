@@ -11,9 +11,6 @@
 		},
 		{
 			"path": "src/cloud/frontend"
-		},
-		{
-			"path": "../imt232_sistemasEmbebidos2/embobados_lab/lab_03"
 		}
 	],
 	"settings": {
