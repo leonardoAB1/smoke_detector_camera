@@ -1,3 +1,13 @@
+# Smoke Detector Camera
+
+"Smoke Detector Camera" is a project that aims to detect smokers and vaporizer users in a closed environment. The project combines the development of a local website using Django and web technologies such as HTML, CSS, and JavaScript, with the connection of an ESP32-CAM camera running FreeRTOS. Additionally, libraries like OpenCV and PyTorch will be used for image calculations and analysis.
+
+The Django-based website will receive and display the data captured by the camera, as well as perform additional processing to successfully differentiate smokers from vaporizer users. Deep learning models and algorithms will be employed to detect and classify actions and gestures related to tobacco and vaporizer consumption.
+
+Furthermore, there is a possibility of building a database to store captured images for long-term recording and analysis. The SQL database management system provided by Django will be utilized for this purpose.
+
+In summary, "Smoke Detector Camera" is a project that combines web technologies, computer vision, and deep learning to detect and differentiate smokers from vaporizer users in a closed environment.
+
 # IoT Project Directory Structure
 
 This repository contains the directory structure for an IoT project. The structure is designed to organize the different components of the project and provide a logical arrangement for source code, documentation, configuration files, and more.
