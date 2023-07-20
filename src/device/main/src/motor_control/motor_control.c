@@ -48,8 +48,8 @@ esp_err_t move_motor(const Motor *motor, float angle) {
 
     MOTOR_CHECK(ESP_OK == result, "write servo angle failed", ESP_FAIL);
 
-    uint32_t current_duty = ledc_get_duty(motor->speed_mode, (ledc_channel_t)motor->channel);
-    ESP_LOGI(MOTOR_TAG, "Actual motor duty cycle for speed mode %d and channel %d: %lu Angle: %.2f Duty: %lu", motor->speed_mode, motor->channel, (unsigned long)current_duty, motor->angle, (unsigned long)duty);
+    //uint32_t current_duty = ledc_get_duty(motor->speed_mode, (ledc_channel_t)motor->channel);
+    //ESP_LOGI(MOTOR_TAG, "Actual motor duty cycle for speed mode %d and channel %d: %lu Angle: %.2f Duty: %lu", motor->speed_mode, motor->channel, (unsigned long)current_duty, motor->angle, (unsigned long)duty);
 
     return ESP_OK;
 }
