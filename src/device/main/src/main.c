@@ -8,25 +8,7 @@
  *
  *******************************************************************************/
 
-#include <esp_system.h>
-#include <nvs_flash.h>
-#include "esp_timer.h"
-
-#include "connect_wifi/connect_wifi.h"
-#include "camera/camera_utils.h"
-#include "camera/camera_pins.h"
-#include "gpio_utils/gpio_utils.h"
-#include "motor_control/motor_control.h"
-#include "web_server/web_server.c"
-#include "http_handlers/http_handlers.h"
-#include "motor_control/motor_control.h"
-#include "task_utils/task_utils.h"
-#include "gpio_interrupts/gpio_interrupts.h"
-
-// Boundary for multipart/x-mixed-replace content type
-#define PART_BOUNDARY "123456789000000000000987654321"
-// Boundary for multipart/form-data content type
-#define BOUNDARY "------------------------123456789000000000000987654321"
+#include "main.h"
 
 // Global variable to store the authenticated user's role
 UserRole authenticatedUserRole;
@@ -34,14 +16,16 @@ UserRole authenticatedUserRole;
 // Entry point of the application
 void app_main(void)
 {
-    // Initialize NVS (Non-Volatile Storage) to store WiFi configuration
-    esp_err_t ret = nvs_flash_init();
-    if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND)
-    {
-        ESP_ERROR_CHECK(nvs_flash_erase());
-        ret = nvs_flash_init();
-    }
-    ESP_ERROR_CHECK(ret);
+    // Initialize NVS (Non-Volatile Storage)
+    nvs_flash_init_custom();
+
+    #if ENABLE_BLE
+    // Initialize Bluetooth Low Energy
+    startBLE();
+    snprintf(notification, sizeof(notification), "Initial Notification");
+    //setup loging thru ble
+    setup_bt_logging();
+    #endif /* ENABLE_BLE */
 
     // Initialize the camera
     ESP_ERROR_CHECK(init_camera());
@@ -63,7 +47,18 @@ void app_main(void)
 
     // Start the web server
     start_webserver();
+}
 
+esp_err_t nvs_flash_init_custom(){
+    esp_err_t ret = nvs_flash_init();
+    if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND)
+    {
+        ESP_ERROR_CHECK(nvs_flash_erase());
+        ret = nvs_flash_init();
+    }
+    ESP_ERROR_CHECK(ret);
+
+    return ESP_OK;
 }
 
 /********************************* END OF FILE ********************************/

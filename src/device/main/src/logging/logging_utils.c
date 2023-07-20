@@ -19,5 +19,23 @@ const char *GPIO_TAG = "esp32-cam GPIO Log";
 const char *GPIO_STATES_TAG = "esp32-cam GPIO States Log";
 const char *MOTOR_TAG = "esp32-cam Motor Log";
 
+#if ENABLE_BLE
+const char *BLE_TAG = "BLE-Server";
+
+void bt_log_output(const char *fmt, va_list args)
+{
+    char buffer[MAX_NOTIFICATION_LEN];
+    vsnprintf(buffer, sizeof(buffer), fmt, args);
+
+    ble_printf("%s", buffer); //setup serial output communicate by ble
+}
+
+void setup_bt_logging()
+{
+    // Set the custom log output function
+    esp_log_set_vprintf(bt_log_output);
+}
+#endif /* ENABLE_BLE */
+
 /********************************* END OF FILE ********************************/
 /******************************************************************************/

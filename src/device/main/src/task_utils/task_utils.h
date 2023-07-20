@@ -14,21 +14,37 @@
 #include "../motor_control/motor_control.h"
 #include "../logging/logging_utils.h"
 
-// Define the stack depth and priority for the DecrementTask
-#define TASK_MOTOR_ADMIN_CONTROL_STACK_DEPTH 2048
+#ifdef ENABLE_BLE
+#include "../ble_utils/ble_utils.h"
+#endif
+
+// Define the stack depth and priority for the Admin Control Task
+#define TASK_MOTOR_ADMIN_CONTROL_STACK_DEPTH configMINIMAL_STACK_SIZE 
 #define TASK_MOTOR_ADMIN_CONTROL_PRIORITY tskIDLE_PRIORITY+10
+#define TASK_MOTOR_ADMIN_CONTROL_CORE 1
 
 // Define the stack depth and priority for the Default Control Task
-#define TASK_MOTOR_DEFAULT_CONTROL_STACK_DEPTH 2048
+#define TASK_MOTOR_DEFAULT_CONTROL_STACK_DEPTH configMINIMAL_STACK_SIZE 
 #define TASK_MOTOR_DEFAULT_CONTROL_PRIORITY tskIDLE_PRIORITY+10
+#define TASK_MOTOR_DEFAULT_CONTROL_CORE 1
+
+#if ENABLE_BLE
+// Define the stack depth and priority for the BLE Notification Task
+#define TASK_BLE_NOTIFICATION_STACK_DEPTH 1024*5 
+#define TASK_BLE_NOTIFICATION_PRIORITY tskIDLE_PRIORITY+11
+#define TASK_BLE_NOTIFICATION_CORE 0
+#endif /* ENABLE_BLE */
 
 #define MOTOR_ANGLES_QUEUE_ITEM_NUMBER 10  
+
+#define ALPHA 0.1 // Smoothing factor for the EWMA
+#define THRESHOLD 0.9 // Threshold for comparing with angle
 
 //Struct to pass angles to Queue
 typedef struct
 {
-    int angle1;
-    int angle2;
+    uint8_t angle1;
+    uint8_t angle2;
 } MotorAngles_t;
 
 //Declare task params structure
@@ -50,6 +66,7 @@ typedef struct
 	const void *const ParametersPtr;		 /*< Parameter Pointer            */
 	UBaseType_t TaskPriority;				 /*< Task Priority                */
 	TaskHandle_t *const TaskHandle;			 /*< Pointer to task handle       */
+	uint8_t TaskCore;					     /*< Task core (0 or 1)           */
 } TaskInitParams_t;
 
 /**
@@ -77,6 +94,17 @@ void MotorDefaultControlTask(void* pvParameters) __attribute__((noreturn));
 extern Motor motor1;
 extern Motor motor2;
 
+#ifdef ENABLE_BLE
+/**
+ * @brief Task responsible for sending notifications through Bluetooth Low Energy (BLE).
+ * 
+ * This task handles the transmission of notifications using BLE technology. It is designed to run
+ * continuously and send notifications to connected BLE devices.
+ * 
+ * @param pvParameters Pointer to the task parameters (if any).
+ */
+void BLENotificationTask(void *pvParameters) __attribute__((noreturn));
+#endif /* ENABLE_BLE */
 /**
  * @param task_handle: The task handle name
  * @param stack_allotment:  How much stack space did you allocate to it when you created it
