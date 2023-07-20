@@ -9,7 +9,6 @@
  *******************************************************************************/
 
 #include "../connect_wifi/connect_wifi.h"
-#include "config.h"
 
 int wifi_connect_status = 0;
 int s_retry_num = 0;
@@ -23,7 +22,7 @@ EventGroupHandle_t s_wifi_event_group;
 #define WIFI_CONNECTED_BIT BIT0
 #define WIFI_FAIL_BIT BIT1
 
-static esp_err_t wifi_event_handler(void *arg, esp_event_base_t event_base, int32_t event_id, void *event_data)
+static void wifi_event_handler(void *arg, esp_event_base_t event_base, int32_t event_id, void *event_data)
 {
     if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_START)
     {
@@ -58,7 +57,6 @@ static esp_err_t wifi_event_handler(void *arg, esp_event_base_t event_base, int3
 
         wifi_connect_status = 1;
     }
-    return ESP_OK;
 }
 
 esp_err_t connect_wifi(void)

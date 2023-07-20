@@ -16,14 +16,10 @@
 #include <esp_log.h>
 #include <freertos/FreeRTOS.h>
 #include <freertos/event_groups.h>
-#include <lwip/sockets.h>
-#include <lwip/sys.h>
-#include <lwip/api.h>
-#include <lwip/netdb.h>
-#include "cJSON.h"
 
 #include "../logging/logging_utils.h"
 #include "../gpio_utils/gpio_utils.h"
+#include "config.h"
 
 #define MAXIMUM_RETRY 5
 
@@ -34,9 +30,8 @@
  * @param event_base Base of the event
  * @param event_id ID of the event
  * @param event_data Data associated with the event
- * @return esp_err_t Returns ESP_OK if the event is handled successfully, otherwise returns an error code.
  */
-static esp_err_t wifi_event_handler(void *arg, esp_event_base_t event_base, int32_t event_id, void *event_data);
+static void wifi_event_handler(void *arg, esp_event_base_t event_base, int32_t event_id, void *event_data);
 
 /**
  * @brief Connects to Wi-Fi.

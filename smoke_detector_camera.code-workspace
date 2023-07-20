@@ -68,7 +68,12 @@
 			"esp_camera.h": "c",
 			"gpio_interrupts.h": "c",
 			"gpio_state.h": "c",
-			"random": "c"
+			"random": "c",
+			"event_groups.h": "c",
+			"ble_utils.h": "c",
+			"ble_svc_gatt.h": "c",
+			"main.h": "c",
+			"cstdio": "c"
 		},
 		"liveServer.settings.multiRootWorkspaceName": "frontend"
 	}
