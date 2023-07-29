@@ -73,7 +73,26 @@
 			"ble_utils.h": "c",
 			"ble_svc_gatt.h": "c",
 			"main.h": "c",
-			"cstdio": "c"
+			"cstdio": "c",
+			"bt_utils.h": "c",
+			"esp_bt_device.h": "c",
+			"esp_bt_main.h": "c",
+			"esp_bt.h": "c",
+			"esp_nimble_hci.h": "c",
+			"nimble_port.h": "c",
+			"util.h": "c",
+			"nimble_port_freertos.h": "c",
+			"esp_gap_bt_api.h": "c",
+			"esp_spp_api.h": "c",
+			"console.h": "c",
+			"nvs_flash.h": "c",
+			"nvs.h": "c",
+			"stddef.h": "c",
+			"time.h": "c",
+			"esp_bt_defs.h": "c",
+			"string_view": "c",
+			"settings.h": "c",
+			"stdarg.h": "c"
 		},
 		"liveServer.settings.multiRootWorkspaceName": "frontend"
 	}

@@ -6,8 +6,13 @@
  * @note        This code is written in C and is used on an ESP32-CAM development board.
  *
  *******************************************************************************/
+
 #ifndef BLE_UTILS_H_
 #define BLE_UTILS_H_
+
+#include "settings.h"
+
+#if ENABLE_BLE
 
 #include "esp_nimble_hci.h"
 #include "nimble/nimble_port.h"
@@ -145,6 +150,8 @@ void gatt_svr_register_cb(struct ble_gatt_register_ctxt *ctxt, void *arg);
  *       Otherwise, notifications will not be sent even if "notification" contains valid data.
  */
 void sendNotification();
+
+#endif /* ENABLE_BLE */
 
 #endif /* BLE_UTILS_H_ */
 

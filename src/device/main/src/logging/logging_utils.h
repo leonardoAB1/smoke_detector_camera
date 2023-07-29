@@ -11,12 +11,9 @@
 #ifndef LOGGING_UTILS_H
 #define LOGGING_UTILS_H
 
-#ifdef ENABLE_BLE
-#include "../ble_utils/ble_utils.h"
-#endif
-
 #include <esp_log.h>
 #include <stdarg.h>
+#include "settings.h"
 
 /**
  * @brief Tag for camera-related log messages
@@ -63,11 +60,14 @@ extern const char *GPIO_STATES_TAG;
  */
 extern const char *MOTOR_TAG;
 
-#if ENABLE_BLE
+#if ENABLE_BT
+
+#include "../bt_utils/bt_utils.h"
+
 /**
- * @brief Tag for BLE-related log messages
+ * @brief Tag for Bluetooth-related log messages
  */
-extern const char *BLE_TAG;
+extern const char *BT_TAG;
 
 /**
  * @brief Logging function for Bluetooth output
@@ -76,10 +76,23 @@ extern const char *BLE_TAG;
  */
 void bt_log_output(const char *fmt, va_list args);
 
+#endif /* ENABLE_BT */
+
+#if ENABLE_BLE
+
+#include "../ble_utils/ble_utils.h"
+
 /**
- * @brief Function to set up Bluetooth logging
+ * @brief Tag for BLE-related log messages
  */
-void setup_bt_logging();
+extern const char *BLE_TAG;
+
+/**
+ * @brief Logging function for Bluetooth Low Energy output
+ * @param fmt Format string for the log message
+ * @param args Variable argument list
+ */
+void ble_log_output(const char *fmt, va_list args);
 
 #endif /* ENABLE_BLE */
 

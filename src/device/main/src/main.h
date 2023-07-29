@@ -11,15 +11,18 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#define ENABLE_BLE 0 // Change this to 1 to enable BLE functionality
-                     // Warning!!: Aproximately 30% of IRAM must be free in order to use it
+#include "settings.h"
 
 #include <esp_system.h>
 #include <nvs_flash.h>
 
-#ifdef ENABLE_BLE
+#if ENABLE_BT
+#include "bt_utils/bt_utils.h"
+#endif /* ENABLE_BT */
+
+#if ENABLE_BLE
 #include "ble_utils/ble_utils.h"
-#endif
+#endif /* ENABLE_BLE */
 
 #include "connect_wifi/connect_wifi.h"
 #include "camera/camera_utils.h"
@@ -42,7 +45,7 @@ extern UserRole authenticatedUserRole;
 #define BOUNDARY "------------------------123456789000000000000987654321"
 
 // Function prototypes
-esp_err_t nvs_flash_init_custom();
+esp_err_t nvs_flash_init_custom(esp_err_t ret);
 
 #endif /* MAIN_H */
 

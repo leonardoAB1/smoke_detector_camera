@@ -19,6 +19,8 @@
 
 #include "../ble_utils/bleprph.h"
 
+#if ENABLE_BLE
+
 /**
  * Utility function to log an array of bytes.
  */
@@ -41,3 +43,8 @@ print_addr(const void *addr)
     MODLOG_DFLT(INFO, "%02x:%02x:%02x:%02x:%02x:%02x",
                 u8p[5], u8p[4], u8p[3], u8p[2], u8p[1], u8p[0]);
 }
+
+#endif /* ENABLE_BLE */
+
+/********************************* END OF FILE ********************************/
+/******************************************************************************/

@@ -20,6 +20,10 @@
 #ifndef H_BLEPRPH_
 #define H_BLEPRPH_
 
+#include "settings.h"
+
+#if ENABLE_BLE
+
 #include <stdbool.h>
 #include "nimble/ble.h"
 #include "modlog/modlog.h"
@@ -53,4 +57,9 @@ void print_addr(const void *addr);
 }
 #endif
 
-#endif
+#endif /* ENABLE_BLE */
+
+#endif /*H_BLEPRPH_*/
+
+/********************************* END OF FILE ********************************/
+/******************************************************************************/

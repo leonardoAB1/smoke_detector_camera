@@ -16,15 +16,23 @@ UserRole authenticatedUserRole;
 // Entry point of the application
 void app_main(void)
 {
+    esp_err_t ret = nvs_flash_init();
     // Initialize NVS (Non-Volatile Storage)
-    nvs_flash_init_custom();
+    nvs_flash_init_custom(ret);
 
+    #if ENABLE_BT
+    init_bluetooth(ret);
+    // Set the custom log output function
+    esp_log_set_vprintf(bt_log_output);
+    #endif /* ENABLE_BT */
+    
     #if ENABLE_BLE
     // Initialize Bluetooth Low Energy
     startBLE();
-    snprintf(notification, sizeof(notification), "Initial Notification");
-    //setup loging thru ble
-    setup_bt_logging();
+    snprintf(notification, 
+            sizeof(notification), "Initial Notification");
+    // Set the custom log output function
+    esp_log_set_vprintf(ble_log_output);
     #endif /* ENABLE_BLE */
 
     // Initialize the camera
@@ -49,8 +57,7 @@ void app_main(void)
     start_webserver();
 }
 
-esp_err_t nvs_flash_init_custom(){
-    esp_err_t ret = nvs_flash_init();
+esp_err_t nvs_flash_init_custom(esp_err_t ret){
     if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND)
     {
         ESP_ERROR_CHECK(nvs_flash_erase());

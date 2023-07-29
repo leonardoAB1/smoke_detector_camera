@@ -12,6 +12,7 @@ idf_component_register(SRCS
     src/motor_control/motor_control.c
     src/task_utils/task_utils.c
     src/gpio_state/gpio_state.c
+    src/bt_utils/bt_utils.c
     src/ble_utils/ble_utils.c
     src/ble_utils/misc.c
     INCLUDE_DIRS
