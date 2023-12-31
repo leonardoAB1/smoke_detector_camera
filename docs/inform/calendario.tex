@@ -1,0 +1,176 @@
+\calwidth=15.5cm
+
+% Few useful commands (our classes always meet either on Monday and Wednesday 
+% or on Tuesday and Thursday)
+
+\newcommand{\MWClass}{%
+\calday[Monday]{\classday}
+\calday[Tuesday]{\classday}
+\calday[Wednesday]{\classday} 
+\calday[Thursday]{\classday}  
+\calday[Friday]{\classday}
+\skipday\skipday % weekend (no class)
+}
+
+\newcommand{\TRClass}{%
+\calday[Monday]{\classday}
+\calday[Tuesday]{\classday} 
+\calday[Wednesday]{\classday}
+\calday[Thursday]{\classday} 
+\calday[Friday]{\classday} % 
+\skipday\skipday % weekend (no class)
+}
+
+\newcommand{\Holiday}[2]{%
+\options{#1}{\noclassday}
+\caltext{#1}{#2}
+}
+
+%\paragraph*{Calendario del Proyecto Smoke Detector Cam:}
+\begin{center}
+\begin{calendar}{08/28/2023}{15} % Semester starts on 1/11/2010 and last for 18
+
+% weeks, including finals week
+\setlength{\calboxdepth}{.25in}
+\TRClass
+% schedule
+
+% Semana 5
+\caltexton{0}{}
+
+% Semana 6
+\caltexton{6}{}
+
+% Semana 7
+\caltexton{5}{Presentación de propuestas de proyecto\cellcolor{green}}
+\caltexton{7}{Objetivo 1.1}
+\caltexton{10}{Objetivo 1.2}
+
+% Semana 8
+\caltexton{12}{}
+\caltexton{15}{Metodo de los 5 pasos\cellcolor{green}}
+
+
+% Semana 9 Examenes
+\caltexton{16}{\cellcolor{red}}
+\caltextnext{Objetivo 2.1\cellcolor{red}}
+\caltextnext{\cellcolor{red}}
+\caltextnext{\cellcolor{red}}
+\caltextnext{\cellcolor{red}}
+\caltexton{20}{Objetivo 1.4\cellcolor{red}}
+
+% Semana 10 Examenes
+\caltexton{21}{\cellcolor{red}}
+\caltextnext{Objetivo 1.5\cellcolor{red}}
+\caltextnext{\cellcolor{red}}
+\caltextnext{\cellcolor{red}}
+\caltextnext{\cellcolor{red}}
+
+% Semana 11 Examenes
+\caltexton{26}{\cellcolor{red}}
+\caltextnext{\cellcolor{red}}
+\caltextnext{\cellcolor{red}}
+\caltextnext{\cellcolor{red}}
+\caltextnext{\cellcolor{red}}
+
+% Semana 12 Examenes
+\caltexton{31}{\cellcolor{red}}
+\caltextnext{\cellcolor{red}}
+\caltextnext{\cellcolor{red}}
+\caltextnext{\cellcolor{red}}
+\caltextnext{\cellcolor{red}}
+
+% Semana 13
+\caltexton{36}{Objetivo 2.1\\Objetivo 2.2}
+
+% Semana 14
+\caltexton{41}{Objetivo 2.3}
+\caltexton{44}{}
+
+% Semana 15
+\caltexton{47}{Objetivo 2.4}
+\caltexton{49}{Proyecto Finalizado\cellcolor{green}}
+
+% Semana 16 Examenes
+\caltexton{50}{\cellcolor{red}}
+\caltextnext{Objetivo 3.1\cellcolor{red}}
+\caltextnext{\cellcolor{red}}
+\caltextnext{\cellcolor{red}}
+\caltextnext{\cellcolor{red}}
+
+% Semana 17 Examenes
+\caltexton{55}{\cellcolor{red}}
+\caltextnext{Objetivo 3.2\cellcolor{red}}
+\caltextnext{\cellcolor{red}}
+\caltextnext{\cellcolor{red}}
+\caltextnext{\cellcolor{red}}
+
+% Semana 18
+\caltexton{60}{}
+\caltexton{61}{Objetivo 3.3}
+
+% Semana 19 Finales
+\caltexton{65}{\cellcolor{red}}
+\caltextnext{\cellcolor{red}}
+\caltextnext{\cellcolor{red}}
+\caltextnext{\cellcolor{red}}
+\caltextnext{\cellcolor{red}}
+
+% Semana 20 Finales
+\caltexton{70}{\cellcolor{red}}
+\caltextnext{\cellcolor{red}}
+\caltextnext{\cellcolor{red}}
+\caltextnext{\cellcolor{red}}
+\caltextnext{\cellcolor{red}}
+\caltext{12/8/2023}{Ultimo día del semestre}
+
+% Feriados
+\Holiday{1/1/2023}{Año Nuevo (domingo) \cellcolor{orange}}
+\Holiday{1/22/2023}{Estado plurinacional (domingo, festivo especial) \cellcolor{orange}}
+\Holiday{2/20/2023}{Carnaval (lunes) \cellcolor{orange}}
+\Holiday{2/21/2023}{Carnaval (martes) \cellcolor{orange}}
+\Holiday{4/6/2023}{Semana Santa (jueves) \cellcolor{orange}}
+\Holiday{4/7/2023}{Semana Santa (viernes) \cellcolor{orange}}
+\Holiday{5/1/2023}{Día del Trabajador \cellcolor{orange}}
+\Holiday{6/8/2023}{Corpus Christi (jueves) \cellcolor{orange}}
+\Holiday{6/21/2023}{Año Nuevo aymara o andino \cellcolor{orange}}
+\Holiday{8/7/2023}{Día de la Independencia \cellcolor{orange}}
+\Holiday{11/2/2023}{Día de los Difuntos \cellcolor{orange}}
+\Holiday{12/25/2023}{Navidad (lunes) \cellcolor{orange}}
+
+\options{4/26/2023}{\noclassday} % finals week
+\options{4/27/2023}{\noclassday} % finals week
+\options{4/28/2023}{\noclassday} % finals week
+\options{4/29/2023}{\noclassday} % finals week
+\options{4/30/2023}{\noclassday} % finals week
+\caltext{4/27/2023}{\textbf{Final Exam}}
+\end{calendar}
+\end{center}
+
+\begin{minipage}{\linewidth}
+    \subsection*{Objetivo 1: Diseñar el sistema electrónico de la cámara inteligente "Smoke Detector Cam"}
+
+\begin{enumerate}[label=1.\arabic*]
+    \item Identificar los componentes esenciales necesarios para el funcionamiento de la cámara inteligente, como sensores de humo, una cámara, sistemas de refrigeración y una batería.
+    \item Investigar y seleccionar los componentes electrónicos y mecánicos adecuados que se adapten a las restricciones de espacio y las consideraciones de fabricación.
+    \item Diseñar el esquema electrónico que incluya la interconexión de los componentes, considerando las necesidades de alimentación, control y comunicación.
+    \item Utilizar software de diseño electrónico, como Eagle, KiCad o Altium, para crear un diseño de circuito impreso (PCB) que acomode los componentes de manera eficiente y cumpla con las restricciones de espacio.
+    \item Realizar pruebas de prototipo para asegurarse de que los componentes funcionen correctamente y se comuniquen de manera efectiva.
+\end{enumerate}
+
+\subsection*{Objetivo 2: Desarrollar el cuerpo de la cámara utilizando software CAD}
+
+\begin{enumerate}[label=2.\arabic*]
+    \item Seleccionar un software CAD adecuado, como SolidWorks, AutoCAD o Fusion 360, para el diseño de la carcasa de la cámara.
+    \item Diseñar la carcasa de manera que permita la integración de los componentes electrónicos, como la cámara y los sensores de humo, de manera eficiente tomando en cuenta las limitaciones y predisposiciones del método de manufactura seleccionado.
+    \item Modelar el sistema de refrigeración seleccionado utilizando las técnicas de diseño pertinentes para maximizar la comparación y posterior análisis con mínimos recursos.
+    \item Ajustar el diseño de la carcasa según sea necesario y realizar revisiones hasta obtener un diseño final satisfactorio.
+\end{enumerate}
+
+\subsection*{Objetivo 3: Realizar simulaciones del sistema de refrigeración}
+\begin{enumerate}[label=3.\arabic*]
+    \item Utilizar herramientas de análisis de ingeniería asistida por computadora (CAE), como ANSYS o COMSOL, para simular el rendimiento del sistema de refrigeración.
+    \item Evaluar las temperaturas de funcionamiento de los componentes electrónicos y asegurarse de que estén dentro de los límites seguros.
+    \item Optimizar el diseño del sistema de refrigeración según los resultados de las simulaciones.
+\end{enumerate}
+\end{minipage}

@@ -1,0 +1,259 @@
+\needspace{3cm}
+\subsection{Matriz de Selección}
+
+En el proceso de diseño del hardware de la cámara inteligente, se llevará a cabo una comparación en el Cuadro~\ref{tab:matriz-conceptos} con un producto existente, en este caso, la cámara comercial Xiaomi Domo, que se muestra en la Figura~\ref{fig:XiamiDomo}.
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{|X|c|c|c|c|c|c|c|}
+\hline
+\cellcolor{lightgray}\textbf{Conceptos} & \cellcolor{lightgray}\textbf{1} & \cellcolor{lightgray}\textbf{2} & \cellcolor{lightgray}\textbf{3} & \cellcolor{lightgray}\textbf{4} & \cellcolor{lightgray}\textbf{5} & \cellcolor{lightgray}\textbf{14} & \cellcolor{lightgray}\textbf{REF} \\
+\hline
+Integración de Componentes Electrónicos & + & 0 & + & + & - & +& 0\\
+\hline
+Facilidad de Mantenimiento & - & - & + & + & 0 & 0& 0 \\
+\hline
+Facilidad de Manufactura con Impresión 3D & + & + & + & + & - & +& 0 \\
+\hline
+Peso & 0 & - & 0 & - & 0 & -& 0 \\
+\hline
+Volumen & + & - & + & - & 0 & 0& 0 \\
+\hline
+Durabilidad & + & + & + & + & - & + & 0 \\
+\hline
+Costo de Producción & - & - & + & + & - & 0 & 0 \\
+\hline
+\cellcolor{lightgray} Suma +& \cellcolor{lightgray}4 & \cellcolor{lightgray}2 & \cellcolor{lightgray}6 & \cellcolor{lightgray}5 & \cellcolor{lightgray}0 & \cellcolor{lightgray}3 & \cellcolor{lightgray}0 \\
+\hline
+\cellcolor{lightgray} Suma 0\cellcolor{lightgray}& \cellcolor{lightgray}1 & \cellcolor{lightgray}1 & \cellcolor{lightgray}1 & \cellcolor{lightgray}0 & \cellcolor{lightgray}3 & \cellcolor{lightgray}3 & \cellcolor{lightgray}7 \\
+\hline
+\cellcolor{lightgray} Suma -& \cellcolor{lightgray}2 & \cellcolor{lightgray}4 & \cellcolor{lightgray}0 & \cellcolor{lightgray}2 & \cellcolor{lightgray}4 & \cellcolor{lightgray}1 & \cellcolor{lightgray}0 \\
+\hline
+Evaluación neta & 2 & -2 & 6 & 3 & -4 & 2 & 0 \\
+\hline
+Lugar & 3 & 5 & 1 & 2 & 6 & 3 & 4 \\
+\hline
+¿Continuar? & Combinar & No & Si & Combinar & No & No & No \\
+\hline
+\end{tabularx}
+\caption{Matriz de Selección de Conceptos}
+\label{tab:matriz-conceptos}
+\end{table}
+
+Al observar el Cuadro~\ref{tab:matriz-conceptos}, se evidencia que la unión de los conceptos 1 y 4 no presenta un desempeño superior al del concepto 3. Por lo tanto, se opta por emplear los conceptos en el primer y segundo puesto.
+
+\needspace{3cm}
+\subsection{Evaluación de Conceptos}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{|l|X|X|X|}
+\hline
+ & Concepto 3  & Concepto 4 & Referencia\\
+\hline
+
+    \begin{tabular}{@{}p{4cm}|p{1cm}@{}}
+    Criterios & Peso \\
+    \end{tabular} 
+    &
+    \begin{tabular}{@{}p{0.9cm}|p{2.4cm}@{}}
+    Calif. & Ev.Pond. \\
+    \end{tabular}
+    & 
+    \begin{tabular}{@{}p{0.9cm}|p{2.4cm}@{}}
+    Calif. & Ev.Pond. \\
+    \end{tabular}
+    & 
+    \begin{tabular}{@{}p{0.9cm}|p{2.4cm}@{}}
+    Calif. & Ev.Pond. \\
+    \end{tabular}
+    \\
+    \hline
+    %Fila 1
+    \begin{tabular}{@{}p{4cm}|p{1cm}@{}}
+    Integración Electronica & 15\% \\
+    \end{tabular} 
+    &
+    \begin{tabular}{@{}p{0.9cm}|p{2.4cm}@{}}
+    5 &  0.75 \\
+    \end{tabular}
+    & 
+    \begin{tabular}{@{}p{0.9cm}|p{2.4cm}@{}}
+    4 & 0.6  \\
+    \end{tabular}
+    & 
+    \begin{tabular}{@{}p{0.9cm}|p{2.4cm}@{}}
+    5 &  0.75 \\
+    \end{tabular}
+    \\
+    \hline
+    %Fila 2
+    \begin{tabular}{@{}p{4cm}|p{1cm}@{}}
+    Facil. Mantenimiento & 15\% \\
+    \end{tabular} 
+    &
+    \begin{tabular}{@{}p{0.9cm}|p{2.4cm}@{}}
+     4 &  0.6 \\
+    \end{tabular}
+    & 
+    \begin{tabular}{@{}p{0.9cm}|p{2.4cm}@{}}
+     4 &  0.6 \\
+    \end{tabular}
+    & 
+    \begin{tabular}{@{}p{0.9cm}|p{2.4cm}@{}}
+    3 &  0.45 \\
+    \end{tabular}
+    \\
+    \hline
+    %Fila 3
+    \begin{tabular}{@{}p{4cm}|p{1cm}@{}}
+    Facilidad Manufactura & 15\% \\
+    \end{tabular} 
+    &
+    \begin{tabular}{@{}p{0.9cm}|p{2.4cm}@{}}
+    5 &  0.75 \\
+    \end{tabular}
+    & 
+    \begin{tabular}{@{}p{0.9cm}|p{2.4cm}@{}}
+    4 &  0.6 \\
+    \end{tabular}
+    & 
+    \begin{tabular}{@{}p{0.9cm}|p{2.4cm}@{}}
+    3 & 0.45 \\
+    \end{tabular}
+    \\
+    \hline
+    %Fila 4
+    \begin{tabular}{@{}p{4cm}|p{1cm}@{}}
+    Peso & 10\% \\
+    \end{tabular} 
+    &
+    \begin{tabular}{@{}p{0.9cm}|p{2.4cm}@{}}
+    3 &  0.3 \\
+    \end{tabular}
+    & 
+    \begin{tabular}{@{}p{0.9cm}|p{2.4cm}@{}}
+    5&  0.5 \\
+    \end{tabular}
+    & 
+    \begin{tabular}{@{}p{0.9cm}|p{2.4cm}@{}}
+    5& 0.5 \\
+    \end{tabular}
+    \\
+    \hline
+    %Fila 5
+     \begin{tabular}{@{}p{4cm}|p{1cm}@{}}
+     Volumen & 10\% \\
+    \end{tabular} 
+    &
+    \begin{tabular}{@{}p{0.9cm}|p{2.4cm}@{}}
+    3 & 0.3  \\
+    \end{tabular}
+    & 
+    \begin{tabular}{@{}p{0.9cm}|p{2.4cm}@{}}
+    4 & 0.4 \\
+    \end{tabular}
+    & 
+    \begin{tabular}{@{}p{0.9cm}|p{2.4cm}@{}}
+     5& 0.5 \\
+    \end{tabular}
+    \\
+    \hline
+    %Fila 6
+    \begin{tabular}{@{}p{4cm}|p{1cm}@{}}
+    Durabilidad & 15\% \\
+    \end{tabular} 
+    &
+    \begin{tabular}{@{}p{0.9cm}|p{2.4cm}@{}}
+    4&  0.6 \\
+    \end{tabular}
+    & 
+    \begin{tabular}{@{}p{0.9cm}|p{2.4cm}@{}}
+     5 & 0.75  \\
+    \end{tabular}
+    & 
+    \begin{tabular}{@{}p{0.9cm}|p{2.4cm}@{}}
+     3 & 0.45 \\
+    \end{tabular}
+    \\
+    \hline
+    %Fila 7
+    \begin{tabular}{@{}p{4cm}|p{1cm}@{}}
+    Costo de Producción & 20\% \\
+    \end{tabular} 
+    &
+    \begin{tabular}{@{}p{0.9cm}|p{2.4cm}@{}}
+     4 &  0.8 \\
+    \end{tabular}
+    & 
+    \begin{tabular}{@{}p{0.9cm}|p{2.4cm}@{}}
+     3 &  0.6 \\
+    \end{tabular}
+    & 
+    \begin{tabular}{@{}p{0.9cm}|p{2.4cm}@{}}
+     4&  0.8\\
+    \end{tabular}
+    \\
+    \hline
+    %Fila 8
+    \begin{tabular}{@{}p{4cm}|p{1cm}@{}}
+    & Total \\
+    \end{tabular} 
+    &
+    \begin{tabular}{@{}p{0.9cm}|p{2.4cm}@{}}
+     &   4.1\\
+    \end{tabular}
+    & 
+    \begin{tabular}{@{}p{0.9cm}|p{2.4cm}@{}}
+     &   4.05\\
+    \end{tabular}
+    & 
+    \begin{tabular}{@{}p{0.9cm}|p{2.4cm}@{}}
+     &  3.9\\
+    \end{tabular}
+    \\
+    \hline
+    %Fila 9
+    \begin{tabular}{@{}p{4cm}|p{1cm}@{}}
+    & Lugar \\
+    \end{tabular} 
+    &
+    \begin{tabular}{@{}p{0.9cm}|p{2.4cm}@{}}
+    &  1 \\
+    \end{tabular}
+    & 
+    \begin{tabular}{@{}p{0.9cm}|p{2.4cm}@{}}
+     & 2 \\
+    \end{tabular}
+    & 
+    \begin{tabular}{@{}p{0.9cm}|p{2.4cm}@{}}
+     & 3 \\
+    \end{tabular}
+    \\
+    \hline
+    %Fila 10
+    \begin{tabular}{@{}p{1cm} p{2.5cm}@{}}
+    & ¿Continuar? \\
+    \end{tabular} 
+    &
+    Desarrollar
+    & 
+    No
+    & 
+    No
+    \\
+    \hline
+    
+\end{tabularx}
+\caption{Matriz de Evaluación de Conceptos}
+\label{tab:eval_conceptos}
+\end{table}
+
+Tras un análisis riguroso del Cuadro~\ref{tab:eval_conceptos}, queda claro que el Concepto 3 se erige como la elección más sólida para avanzar en el proceso de desarrollo. Con una puntuación total de 4.1, este concepto ha superado tanto al Concepto 4 como a la referencia en todos los aspectos clave. La asignación de pesos a los criterios ha demostrado ser fundamental, y la fortaleza de Concepto 3 en términos de integración electrónica, facilidad de manufactura y costo de producción ha destacado de manera significativa. En contraste, el Concepto 4 ha obtenido una puntuación ligeramente inferior (4.05) y no logra cumplir con las expectativas establecidas. Estos resultados, respaldados por un análisis cuantitativo, respaldan la recomendación de avanzar con el desarrollo del Concepto 3, mientras que sugieren una revisión más profunda o una reconsideración del "Concepto 4" antes de continuar con su implementación.
+
+\needspace{3cm}
+\subsection{Combinación y Mejora de Conceptos}
+Analizando las fortalezas del Concepto 3 con respecto al Concepto 4 
+ en el Cuadro~\ref{tab:eval_conceptos} Se puede notar que el este primero tiene desventajas en términos de peso y volumen. Esto se debe que cuenta con ventiladores directamente encima del circuito electrónico imponiendo una restricción de espacio para e diseño del hardware. A su vez, al estar parte del circuito en movimiento sobre el mecanismo propuesto se debe considerar la posición del ventilador y sus cables con respecto a dicho mecanismo; Podría ser interesante explorar el Concepto 3 con otra elección conceptual de gestión termica.
+
