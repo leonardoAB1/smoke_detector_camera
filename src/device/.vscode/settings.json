@@ -18,5 +18,6 @@
     "idf.flashType": "UART",
     "cmake.sourceDirectory": "C:/Users/ZEPHYRUS/Documents/UCB/Mecatronica/S7_MECATRONICA/smoke_detector_camera/src/device",
     "idf.buildPath": "${workspaceFolder}/build",
-    "idf.buildPathWin": "${workspaceFolder}/build"
+    "idf.buildPathWin": "${workspaceFolder}/build",
+    "cmake.configureOnOpen": false
 }

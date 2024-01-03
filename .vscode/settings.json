@@ -3,5 +3,6 @@
     "cmake.autoSelectActiveFolder": false,
     "cmake.buildDirectory": "${workspaceFolder}/src/device/build",
     "idf.buildPath": "${workspaceFolder}/build",
-    "idf.buildPathWin": "${workspaceFolder}\\build"
+    "idf.buildPathWin": "${workspaceFolder}\\build",
+    "cmake.configureOnOpen": false
 }
